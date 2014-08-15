@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/adinapoli/mandrill.svg?branch=master)](https://travis-ci.org/adinapoli/mandrill)
 
 # Haskell Client for the Mandrill JSON API
 
