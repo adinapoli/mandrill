@@ -20,7 +20,7 @@ library
     Network.API.Mandrill.Utils
   -- other-extensions:    
   build-depends:
-      base >=4.7 && < 5
+      base >=4.6 && < 5
     , text >= 1.0.0.0 && < 1.2
     , wreq >= 0.1.0.1
     , aeson >= 0.7.0.3 && < 0.8
