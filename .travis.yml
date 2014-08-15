@@ -30,13 +30,3 @@ script:
    else
      cabal test --show-details=always;
    fi
- - cabal sdist
- # "cabal check" disabled due to -O2 warning
- - export SRC_TGZ=$(cabal info . | awk '{print $2 ".tar.gz";exit}') ;
-   cd dist/;
-   if [ -f "$SRC_TGZ" ]; then
-      cabal install "$SRC_TGZ";
-   else
-      echo "expected '$SRC_TGZ' not found";
-      exit 1;
-   fi
