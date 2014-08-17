@@ -17,12 +17,14 @@ source-repository head
 library
   exposed-modules:
     Network.API.Mandrill.Settings
-    Network.API.Mandrill.Users
-    Network.API.Mandrill.Messages
     Network.API.Mandrill.Types
-    Network.API.Mandrill.HTTP
+    Network.API.Mandrill.Users
+    Network.API.Mandrill.Users.Types
+    Network.API.Mandrill.Messages
+    Network.API.Mandrill.Messages.Types
   other-modules:
     Network.API.Mandrill.Utils
+    Network.API.Mandrill.HTTP
   -- other-extensions:
   build-depends:
       base >=4.6 && < 5
@@ -32,10 +34,13 @@ library
     , lens >= 4.1 && < 4.6
     , blaze-html >= 0.5.0.0
     , time
+    , old-locale
   hs-source-dirs:
     src
   default-language:
     Haskell2010
+  ghc-options:
+    -funbox-strict-fields
 
 test-suite mandrill-tests
   type:
@@ -44,6 +49,7 @@ test-suite mandrill-tests
     Main.hs
   other-modules:
     Tests
+    RawData
   hs-source-dirs:
     test
   default-language:
@@ -51,7 +57,10 @@ test-suite mandrill-tests
   build-depends:
       mandrill -any
     , base
+    , aeson
+    , bytestring
     , QuickCheck >= 2.6 && < 2.8
     , tasty >= 0.7 && < 0.9
     , tasty-quickcheck
     , tasty-hunit
+    , raw-strings-qq < 1.2

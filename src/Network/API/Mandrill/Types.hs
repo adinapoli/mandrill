@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Network.API.Mandrill.Types where
@@ -6,6 +7,8 @@ module Network.API.Mandrill.Types where
 import           Network.API.Mandrill.Utils
 import           Data.Char
 import           Data.Time
+import           Control.Applicative
+import           System.Locale (defaultTimeLocale)
 import qualified Data.Text as T
 import qualified Data.Text.Lazy as TL
 import           Control.Lens
@@ -57,31 +60,16 @@ deriveJSON defaultOptions {
 
 
 --------------------------------------------------------------------------------
-data MandrillResult = MandrillResult {
-    _mres_email :: !T.Text
-    -- ^ The email address of the recipient
-  , _mres_status :: MandrillEmailStatus
-    -- ^ The sending status of the recipient
-  , _mres_reject_reason :: Maybe MandrillRejectReason
-    -- ^ The reason for the rejection if the recipient status is "rejected"
-  , _mres__id    :: !T.Text
-    -- ^ The message's unique id
-  } deriving Show
-
-makeLenses ''MandrillResult
-deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillResult
-
---------------------------------------------------------------------------------
 -- | The main datatypes which models the response from the Mandrill API,
 -- which can be either a success or a failure.
-data MandrillResponse =
-    MandrillSuccess [MandrillResult]
+data MandrillResponse k =
+    MandrillSuccess [k]
   | MandrillFailure MandrillError deriving Show
 
-instance FromJSON MandrillResponse where
-  parseJSON a@(Array _) = case (parseMaybe parseJSON a) :: Maybe [MandrillResult] of
+instance FromJSON k => FromJSON (MandrillResponse k) where
+  parseJSON a@(Array _) = case (parseMaybe parseJSON a) :: Maybe [k] of
     Just r -> return $ MandrillSuccess r
-    Nothing -> fail $ show a <> " is not a valid MandrillResult"
+    Nothing -> fail $ show a <> " is not a valid MandrillSuccess"
   parseJSON o@(Object _) = case (parseMaybe parseJSON o) :: Maybe MandrillError of
     Just e -> return $ MandrillFailure e
     Nothing -> fail $ show o <> " is not a valid MandrillError"
@@ -152,22 +140,17 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMessage
 
 
 --------------------------------------------------------------------------------
--- * Send payloads
---------------------------------------------------------------------------------
-
-
---------------------------------------------------------------------------------
 type MandrillKey = T.Text
 
-
---------------------------------------------------------------------------------
-data MandrillSendRq = MandrillSendRq {
-    _msrq_key :: MandrillKey
-  , _msrq_message :: MandrillMessage
-  , _msrq_async :: Maybe Bool
-  , _msrq_ip_pool :: Maybe T.Text
-  , _msrq_send_at :: Maybe UTCTime
+newtype MandrillDate = MandrillDate {
+  fromMandrillDate :: UTCTime
   } deriving Show
 
-makeLenses ''MandrillSendRq
-deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillSendRq
+instance ToJSON MandrillDate where
+  toJSON = toJSON . fromMandrillDate
+
+instance FromJSON MandrillDate where
+  parseJSON = withText "MandrillDate" $ \t ->
+      case parseTime defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
+        Just d -> pure $ MandrillDate d
+        _      -> fail "could not parse Mandrill date"

@@ -15,5 +15,6 @@ withQuickCheckDepth tn depth tests =
 main :: IO ()
 main = defaultMainWithIngredients defaultIngredients $
   testGroup "Mandrill tests" [
-        testCase "messages/send.json API parsing" testMessagesSend
+      testCase "users/info.json API parsing"    testUsersInfo
+    , testCase "messages/send.json API parsing" testMessagesSend
     ]

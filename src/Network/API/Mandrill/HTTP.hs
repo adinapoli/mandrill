@@ -9,10 +9,10 @@ import Data.Aeson
 import Network.Wreq
 import Control.Lens
 
-toMandrillResponse :: (MandrillEndpoint ep, ToJSON rq)
+toMandrillResponse :: (MandrillEndpoint ep, FromJSON a, ToJSON rq)
                    => ep
                    -> rq
-                   -> IO MandrillResponse
+                   -> IO (MandrillResponse a)
 toMandrillResponse ep rq = do
   let fullUrl = mandrillUrl <> toUrl ep
   res <- asJSON =<< post (T.unpack fullUrl) (toJSON rq)
