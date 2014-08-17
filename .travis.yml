@@ -24,11 +24,12 @@ before_install:
 
 install:
  - cabal update
- - cabal install --only-dependencies
+ - cabal install --only-dependencies --enable-tests
 
 script:
- - cabal configure -v2
+ - cabal configure --enable-tests -v2
  - cabal build
+ - cabal test
  - cabal check
  - cabal sdist
 
