@@ -1,5 +1,9 @@
 # See https://github.com/hvr/multi-ghc-travis
 # The following enables several GHC versions to be tested; often it's enough to test only against the last release in a major GHC version. Feel free to omit lines listings versions you don't need/want testing for.
+
+notifications:
+  email: false
+
 env:
  - GHCVER=7.6.2 CABALVER=1.16
  - GHCVER=7.6.3 CABALVER=1.16
@@ -19,8 +23,21 @@ before_install:
  - cabal --version
 
 install:
- - travis_retry cabal update
+ - cabal update
+ - cabal install --only-dependencies
 
 script:
- - travis_retry cabal configure
- - travis_retry cabal build
+ - cabal configure -v2
+ - cabal build
+ - cabal check
+ - cabal sdist
+
+# The following scriptlet checks that the resulting source distribution can be built & installed
+ - export SRC_TGZ=$(cabal-$CABALVER info . | awk '{print $2 ".tar.gz";exit}') ;
+   cd dist/;
+   if [ -f "$SRC_TGZ" ]; then
+      cabal install "$SRC_TGZ";
+   else
+      echo "expected '$SRC_TGZ' not found";
+      exit 1;
+   fi
