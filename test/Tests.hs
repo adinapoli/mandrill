@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 module Tests where
 
 import Test.QuickCheck
@@ -9,6 +10,12 @@ import Network.API.Mandrill.Messages.Types
 import Network.API.Mandrill.Users.Types
 import qualified Data.ByteString.Char8 as C8
 import RawData
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ <= 706
+isRight :: Either a b -> Bool
+isRight (Left _) = False
+isRight _ = True
+#endif
 
 testMessagesSend :: Assertion
 testMessagesSend = assertBool "send.json: Parsing failed!" (isRight parsePayload)
