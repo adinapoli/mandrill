@@ -33,6 +33,7 @@ library
     , aeson >= 0.7.0.3 && < 0.8
     , lens >= 4.1 && < 4.6
     , blaze-html >= 0.5.0.0
+    , QuickCheck >= 2.6 && < 2.8
     , time
     , old-locale
   hs-source-dirs:
@@ -50,6 +51,7 @@ test-suite mandrill-tests
   other-modules:
     Tests
     RawData
+    Online
   hs-source-dirs:
     test
   default-language:
@@ -59,8 +61,9 @@ test-suite mandrill-tests
     , base
     , aeson
     , bytestring
-    , QuickCheck >= 2.6 && < 2.8
+    , QuickCheck
     , tasty >= 0.7 && < 0.9
     , tasty-quickcheck
     , tasty-hunit
     , raw-strings-qq < 1.2
+    , text

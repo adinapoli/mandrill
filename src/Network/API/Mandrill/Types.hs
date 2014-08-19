@@ -5,6 +5,7 @@
 module Network.API.Mandrill.Types where
 
 import           Network.API.Mandrill.Utils
+import           Test.QuickCheck
 import           Data.Char
 import           Data.Time
 import           Control.Applicative
@@ -97,6 +98,8 @@ data MandrillRecipient = MandrillRecipient {
 makeLenses ''MandrillRecipient
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillRecipient
 
+instance Arbitrary MandrillRecipient where
+  arbitrary = pure $ MandrillRecipient "test@example.com" Nothing Nothing
 
 --------------------------------------------------------------------------------
 newtype MandrillHtml = MandrillHtml Blaze.Html
@@ -117,6 +120,8 @@ instance FromJSON MandrillHtml where
   parseJSON (String h) = return $ MandrillHtml (Blaze.toHtml h)
   parseJSON v = typeMismatch "Expecting a String for MandrillHtml" v
 
+instance Arbitrary MandrillHtml where
+  arbitrary = pure $ mkMandrillHtml "<p><b>FooBar</b></p>"
 
 --------------------------------------------------------------------------------
 -- | The information on the message to send
@@ -138,6 +143,13 @@ data MandrillMessage = MandrillMessage {
 makeLenses ''MandrillMessage
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMessage
 
+instance Arbitrary MandrillMessage where
+  arbitrary = MandrillMessage <$> arbitrary
+                              <*> pure Nothing
+                              <*> pure "Test Subject"
+                              <*> pure "sender@example.com"
+                              <*> pure Nothing
+                              <*> resize 2 arbitrary
 
 --------------------------------------------------------------------------------
 type MandrillKey = T.Text
