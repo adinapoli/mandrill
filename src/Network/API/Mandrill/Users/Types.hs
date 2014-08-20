@@ -14,16 +14,80 @@ import           Data.Aeson.TH
 
 import           Network.API.Mandrill.Types
 
+
 --------------------------------------------------------------------------------
 data UsersRq = UsersRq {
-    _ureq_key :: MandrillKey
+    _ureq_key :: !MandrillKey
   } deriving Show
 
 makeLenses ''UsersRq
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''UsersRq
 
 --------------------------------------------------------------------------------
-data UsersResponse = UsersResponse {
+data MandrillStats = MandrillStats {
+    _msts_sent :: Int
+  , _msts_hard_bounces :: Int
+  , _msts_soft_bounces :: Int
+  , _msts_rejects :: Int
+  , _msts_complaints :: Int
+  , _msts_unsubs :: Int
+  , _msts_opens :: Int
+  , _msts_unique_opens :: Int
+  , _msts_clicks :: Int
+  , _msts_unique_clicks :: Int
+  } deriving Show
+
+makeLenses ''MandrillStats
+deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillStats
+
+--------------------------------------------------------------------------------
+data UserStats = UserStats {
+    _usts_today :: MandrillStats
+  , _usts_last_7_days :: MandrillStats
+  , _usts_last_30_days :: MandrillStats
+  , _usts_last_60_days :: MandrillStats
+  , _usts_last_90_days :: MandrillStats
+  , _usts_all_time :: MandrillStats
+  } deriving Show
+
+makeLenses ''UserStats
+deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''UserStats
+
+--------------------------------------------------------------------------------
+data UsersInfoResponse = UsersInfoResponse {
+    _usir_username :: !T.Text
+  , _usir_created_at :: MandrillDate
+  , _usir_public_id :: !T.Text
+  , _usir_reputation :: !Int
+  , _usir_hourly_quota :: !Int
+  , _usir_backlog :: !Int
+  , _usir_stats :: UserStats
+  } deriving Show
+
+makeLenses ''UsersInfoResponse
+deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''UsersInfoResponse
+
+
+--------------------------------------------------------------------------------
+newtype UsersPingResponse = UsersPingResponse T.Text deriving Show
+
+deriveFromJSON defaultOptions ''UsersPingResponse
+
+instance ToJSON UsersPingResponse where
+  toJSON (UsersPingResponse t) = String t
+
+
+--------------------------------------------------------------------------------
+data UsersPing2Response = UsersPing2Response {
+    _usrr_PING :: T.Text
+  } deriving Show
+
+deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''UsersPing2Response
+
+
+
+--------------------------------------------------------------------------------
+data UsersSendersResponse = UsersResponse {
     _usrr_address :: !T.Text
     -- ^ The sender's email address
   , _usrr_created_at :: MandrillDate
@@ -54,5 +118,5 @@ data UsersResponse = UsersResponse {
     -- ^ The number of unique clicks for emails sent for this sender
   } deriving Show
 
-makeLenses ''UsersResponse
-deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''UsersResponse
+makeLenses ''UsersSendersResponse
+deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''UsersSendersResponse

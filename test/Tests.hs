@@ -26,8 +26,17 @@ testMessagesSend = assertBool "send.json: Parsing failed!" (isRight parsePayload
 testUsersInfo :: Assertion
 testUsersInfo = do
   let res = parsePayload
-  assertBool ("users.json (response): Parsing failed: " ++ show res)
+  assertBool ("users/info.json (response): Parsing failed: " ++ show res)
              (isRight parsePayload)
   where
-    parsePayload :: Either String UsersResponse
+    parsePayload :: Either String UsersInfoResponse
     parsePayload = eitherDecodeStrict . C8.pack $ usersInfoData
+
+testUsersSenders :: Assertion
+testUsersSenders = do
+  let res = parsePayload
+  assertBool ("users/senders.json (response): Parsing failed: " ++ show res)
+             (isRight parsePayload)
+  where
+    parsePayload :: Either String UsersSendersResponse
+    parsePayload = eitherDecodeStrict . C8.pack $ usersSendersData

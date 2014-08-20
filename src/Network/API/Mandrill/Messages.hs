@@ -20,6 +20,6 @@ send :: MandrillKey
      -- ^ ip_pool
      -> Maybe UTCTime
      -- ^ send_at
-     -> IO (MandrillResponse MessagesResponse)
+     -> IO (MandrillResponse [MessagesResponse])
 send k msg async ip_pool send_at =
   toMandrillResponse MessagesSend (MessagesSendRq k msg async ip_pool send_at)

@@ -8,9 +8,13 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 # Supported API versions
 
 * 1.0 (partially)
-  - [Users call](https://mandrillapp.com/api/docs/users.JSON.html)
+  - [Users call](https://mandrillapp.com/api/docs/users.JSON.html) - 100%
+    + info.json
+    + ~~ping.json~~ (as **doesn't return valid json!**)
+    + ping2.json
+    + senders.json
   - [Messages call](https://mandrillapp.com/api/docs/messages.JSON.html)
-    + send
+    + send.json
 
 # Testing online API
 

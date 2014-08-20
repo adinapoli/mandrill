@@ -13,8 +13,36 @@ import           RawData
 
 import           Network.API.Mandrill.Types
 import qualified Network.API.Mandrill.Messages as API
+import qualified Network.API.Mandrill.Users as API
+
+--
+-- Users calls
+--
+testOnlineUsersInfo :: MandrillKey -> Assertion
+testOnlineUsersInfo k = do
+  res <- API.info k
+  case res of
+    MandrillSuccess _ -> return ()
+    MandrillFailure e -> fail $ "users/info.json " ++ show e
+
+testOnlineUsersPing2 :: MandrillKey -> Assertion
+testOnlineUsersPing2 k = do
+  res <- API.ping2 k
+  case res of
+    MandrillSuccess _ -> return ()
+    MandrillFailure e -> fail $ "users/ping2.json " ++ show e
+
+testOnlineUsersSenders :: MandrillKey -> Assertion
+testOnlineUsersSenders k = do
+  res <- API.senders k
+  case res of
+    MandrillSuccess _ -> return ()
+    MandrillFailure e -> fail $ "users/senders.json " ++ show e
 
 
+--
+-- Messages calls
+--
 testOnlineMessagesSend :: MandrillKey -> Assertion
 testOnlineMessagesSend k = do
   msg <- generate arbitrary

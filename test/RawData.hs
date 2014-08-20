@@ -9,6 +9,92 @@ import Data.Either
 usersInfoData :: String
 usersInfoData = [r|
 {
+    "username": "foo@bar.com",
+    "created_at": "2014-03-27 09:42:20.62599",
+    "public_id": "barbaz",
+    "reputation": 99,
+    "hourly_quota": 1094,
+    "backlog": 0,
+    "stats": {
+        "today": {
+            "sent": 102,
+            "hard_bounces": 0,
+            "soft_bounces": 0,
+            "rejects": 0,
+            "complaints": 0,
+            "unsubs": 0,
+            "opens": 71,
+            "unique_opens": 52,
+            "clicks": 25,
+            "unique_clicks": 19
+        },
+        "last_7_days": {
+            "sent": 396,
+            "hard_bounces": 0,
+            "soft_bounces": 1,
+            "rejects": 0,
+            "complaints": 0,
+            "unsubs": 0,
+            "opens": 321,
+            "unique_opens": 209,
+            "clicks": 147,
+            "unique_clicks": 84
+        },
+        "last_30_days": {
+            "sent": 3022,
+            "hard_bounces": 3,
+            "soft_bounces": 4,
+            "rejects": 0,
+            "complaints": 0,
+            "unsubs": 0,
+            "opens": 2408,
+            "unique_opens": 1540,
+            "clicks": 958,
+            "unique_clicks": 578
+        },
+        "last_60_days": {
+            "sent": 6120,
+            "hard_bounces": 5,
+            "soft_bounces": 4,
+            "rejects": 0,
+            "complaints": 0,
+            "unsubs": 0,
+            "opens": 4869,
+            "unique_opens": 3112,
+            "clicks": 2004,
+            "unique_clicks": 1223
+        },
+        "last_90_days": {
+            "sent": 9267,
+            "hard_bounces": 6,
+            "soft_bounces": 4,
+            "rejects": 1,
+            "complaints": 1,
+            "unsubs": 0,
+            "opens": 7428,
+            "unique_opens": 4772,
+            "clicks": 2943,
+            "unique_clicks": 1802
+        },
+        "all_time": {
+            "sent": 15278,
+            "hard_bounces": 7,
+            "soft_bounces": 7,
+            "rejects": 1,
+            "complaints": 1,
+            "unsubs": 0,
+            "opens": 12782,
+            "unique_opens": 7926,
+            "clicks": 5336,
+            "unique_clicks": 3341
+        }
+    }
+}
+|]
+
+usersSendersData :: String
+usersSendersData = [r|
+{
     "address": "sender.example@mandrillapp.com",
     "created_at": "2014-08-12 20:49:42.8344",
     "sent": 42,

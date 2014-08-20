@@ -23,7 +23,10 @@ onlineTestsIfEnabled = do
     Nothing -> return []
     Just k  -> return [
                  testGroup "Mandrill online tests" [
-                   testCase "messages/send.json" (testOnlineMessagesSend k)
+                   testCase "users/info.json" (testOnlineUsersInfo k)
+                 , testCase "users/ping2.json" (testOnlineUsersPing2 k)
+                 , testCase "users/senders.json" (testOnlineUsersSenders k)
+                 , testCase "messages/send.json" (testOnlineMessagesSend k)
                  ]]
 
 ----------------------------------------------------------------------
@@ -33,7 +36,8 @@ main = do
   defaultMainWithIngredients defaultIngredients $
     testGroup "Mandrill tests" $ onlineTests <> [
          testGroup "Mandrill offline tests" [
-          testCase "users/info.json API parsing"    testUsersInfo
-        , testCase "messages/send.json API parsing" testMessagesSend
-        ]
-      ]
+           testCase "users/info.json API parsing"    testUsersInfo
+         , testCase "users/senders.json API parsing" testUsersSenders
+         , testCase "messages/send.json API parsing" testMessagesSend
+         ]
+     ]

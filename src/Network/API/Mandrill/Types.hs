@@ -64,17 +64,17 @@ deriveJSON defaultOptions {
 -- | The main datatypes which models the response from the Mandrill API,
 -- which can be either a success or a failure.
 data MandrillResponse k =
-    MandrillSuccess [k]
+    MandrillSuccess k
   | MandrillFailure MandrillError deriving Show
 
 instance FromJSON k => FromJSON (MandrillResponse k) where
-  parseJSON a@(Array _) = case (parseMaybe parseJSON a) :: Maybe [k] of
+  parseJSON v = case (parseMaybe parseJSON v) :: Maybe k of
     Just r -> return $ MandrillSuccess r
-    Nothing -> fail $ show a <> " is not a valid MandrillSuccess"
-  parseJSON o@(Object _) = case (parseMaybe parseJSON o) :: Maybe MandrillError of
-    Just e -> return $ MandrillFailure e
-    Nothing -> fail $ show o <> " is not a valid MandrillError"
-  parseJSON v = typeMismatch "Expected an Object or an Array for MandrillResponse" v
+    Nothing -> do
+    -- try to parse it as an error
+      case (parseMaybe parseJSON v) :: Maybe MandrillError of
+        Just e -> return $ MandrillFailure e
+        Nothing -> fail $ show v <> " is neither a MandrillSuccess or a MandrillError."
 
 
 --------------------------------------------------------------------------------
