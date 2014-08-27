@@ -18,7 +18,9 @@ isRight _ = True
 #endif
 
 testMessagesSend :: Assertion
-testMessagesSend = assertBool "send.json: Parsing failed!" (isRight parsePayload)
+testMessagesSend = 
+  assertBool ("send.json: Parsing failed! " ++ show parsePayload)
+             (isRight parsePayload)
   where
     parsePayload :: Either String MessagesSendRq
     parsePayload = eitherDecodeStrict . C8.pack $ sendData

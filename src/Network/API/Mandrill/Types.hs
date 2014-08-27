@@ -15,9 +15,9 @@ import qualified Data.Map as Map
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Base64 as Base64
 import qualified Data.Text as T
+import qualified Data.Text.Encoding as TL
 import qualified Data.Text.Lazy as TL
 import           Control.Lens
-import           Control.Monad
 import           Data.Monoid
 import           Data.Aeson
 import           Data.Aeson.Types
@@ -132,11 +132,11 @@ type MandrillTags = T.Text
 
 
 --------------------------------------------------------------------------------
-type MandrillHeader = Map T.Text T.Text
+type MandrillHeaders = Value
 
 
 --------------------------------------------------------------------------------
-type MandrillVars = Map T.Text T.Text
+type MandrillVars = Value
 
 
 --------------------------------------------------------------------------------
@@ -151,22 +151,22 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMergeVars
 --------------------------------------------------------------------------------
 data MandrillMetadata = MandrillMetadata {
     _mmdt_rcpt :: !T.Text
-  , _mmdt_values :: [MandrillVars]
+  , _mmdt_values :: MandrillVars
   } deriving Show
 
 makeLenses ''MandrillMetadata
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMetadata
 
 
-newtype Base64ByteString = B64BS !B.ByteString
+newtype Base64ByteString = B64BS B.ByteString deriving Show
 
 instance ToJSON Base64ByteString where
-  toJSON (B64BS bs) = Base64.encode bs
+  toJSON (B64BS bs) = String . TL.decodeUtf8 . Base64.encode $ bs
 
 instance FromJSON Base64ByteString where
-  parseJSON (String v) = case Base64.decode v of
-    Left err = fail err
-    Right rs = B64BS rs
+  parseJSON (String v) = case Base64.decode (TL.encodeUtf8 v) of
+    Left err -> fail err
+    Right rs -> return $ B64BS rs
   parseJSON rest = typeMismatch "Base64ByteString must be a String." rest
 
 --------------------------------------------------------------------------------
@@ -197,7 +197,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ Optional from name to be used
  , _mmsg_to :: [MandrillRecipient]
    -- ^ A list of recipient information
- , _mmsg_headers :: [MandrillHeader]
+ , _mmsg_headers :: MandrillHeaders
    -- ^ optional extra headers to add to the message (most headers are allowed)
  , _mmsg_important :: Maybe Bool
    -- ^ whether or not this message is important, and should be delivered ahead
@@ -253,7 +253,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ optional string indicating the value to set for the utm_campaign
    -- tracking parameter. If this isn't provided the email's from address
    -- will be used instead.
- , _mmsg_metadata :: [MandrillVars]
+ , _mmsg_metadata :: MandrillVars
    -- ^ metadata an associative array of user metadata. Mandrill will store
    -- this metadata and make it available for retrieval.
    -- In addition, you can select up to 10 metadata fields to index
@@ -277,7 +277,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure "sender@example.com"
                               <*> pure Nothing
                               <*> resize 2 arbitrary
-                              <*> pure []
+                              <*> pure emptyObject
                               <*> pure Nothing
                               <*> pure Nothing
                               <*> pure Nothing
@@ -298,7 +298,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure Nothing
                               <*> pure []
                               <*> pure Nothing
-                              <*> pure []
+                              <*> pure emptyObject
                               <*> pure []
                               <*> pure []
                               <*> pure []
