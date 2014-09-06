@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/adinapoli/mandrill.svg?branch=master)](https://travis-ci.org/adinapoli/mandrill)
-[![Coverage Status](https://img.shields.io/coveralls/adinapoli/mandrill.svg)](https://coveralls.io/r/adinapoli/mandrill)A
+[![Coverage Status](https://img.shields.io/coveralls/adinapoli/mandrill.svg)](https://coveralls.io/r/adinapoli/mandrill)
 
 # Haskell Client for the Mandrill JSON API
 
