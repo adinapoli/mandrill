@@ -5,11 +5,19 @@ import Control.Monad.Reader
 import Control.Applicative
 import Network.API.Mandrill.Types
 
+
+--------------------------------------------------------------------------------
 newtype MandrillT m a = MandrillT {
   runMandrillT :: ReaderT MandrillKey m a
   } deriving (MonadTrans, MonadReader MandrillKey,
               Functor, Applicative, Monad, MonadIO)
 
+
+--------------------------------------------------------------------------------
+type Mandrill = MandrillT IO
+
+
+--------------------------------------------------------------------------------
 runMandrill :: MonadIO m
             => MandrillKey
             -> MandrillT m a

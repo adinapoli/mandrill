@@ -8,6 +8,7 @@ author:              Alfredo Di Napoli
 maintainer:          alfredo.dinapoli@gmail.com
 category:            Network
 build-type:          Simple
+tested-with:         GHC == 7.4, GHC == 7.6, GHC == 7.8
 cabal-version:       >=1.10
 
 source-repository head

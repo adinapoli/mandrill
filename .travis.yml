@@ -21,17 +21,15 @@ before_install:
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
  - cabal --version
- - cabal update
- - cabal install hpc-coveralls
 
 install:
  - cabal update
  - cabal install --only-dependencies --enable-tests
 
 script:
- - cabal configure --enable-tests -v2
+ - cabal configure --enable-tests -v2 --enable-library-coverage
  - cabal build
- - cabal test
+ - cabal test --show-details=always
  - cabal check
  - cabal sdist
 
@@ -46,4 +44,6 @@ script:
    fi
 
 after_script:
- - hpc-coveralls mandrill-tests
+ - cabal install hpc-coveralls
+ - export PATH=/opt/ghc/$GHCVER/bin:$HOME/.cabal/bin:$PATH
+ - hpc-coveralls --coverage-mode=StrictlyFullLines mandrill-tests
