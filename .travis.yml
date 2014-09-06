@@ -21,6 +21,8 @@ before_install:
  - travis_retry sudo apt-get install cabal-install-$CABALVER ghc-$GHCVER
  - export PATH=/opt/ghc/$GHCVER/bin:/opt/cabal/$CABALVER/bin:$PATH
  - cabal --version
+ - cabal update
+ - cabal install hpc-coveralls
 
 install:
  - cabal update
@@ -42,3 +44,6 @@ script:
       echo "expected '$SRC_TGZ' not found";
       exit 1;
    fi
+
+after_script:
+ - hpc-coveralls mandrill-tests

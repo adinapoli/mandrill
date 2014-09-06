@@ -16,8 +16,10 @@ source-repository head
 
 library
   exposed-modules:
+    Network.API.Mandrill
     Network.API.Mandrill.Settings
     Network.API.Mandrill.Types
+    Network.API.Mandrill.Trans
     Network.API.Mandrill.Users
     Network.API.Mandrill.Users.Types
     Network.API.Mandrill.Messages
@@ -25,6 +27,7 @@ library
   other-modules:
     Network.API.Mandrill.Utils
     Network.API.Mandrill.HTTP
+    Network.API.Mandrill.Orphans
   -- other-extensions:
   build-depends:
       base >=4.6 && < 5
@@ -37,7 +40,9 @@ library
     , lens >= 4.1 && < 4.6
     , blaze-html >= 0.5.0.0
     , QuickCheck >= 2.6 && < 2.8
+    , mtl < 3.0
     , time
+    , email-validate >= 1.0.0
     , old-locale
   hs-source-dirs:
     src
@@ -65,7 +70,7 @@ test-suite mandrill-tests
     , aeson
     , bytestring
     , QuickCheck
-    , tasty >= 0.7 && < 0.9
+    , tasty >= 0.9.0.1
     , tasty-quickcheck
     , tasty-hunit
     , raw-strings-qq < 1.2

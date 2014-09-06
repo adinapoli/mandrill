@@ -1,9 +1,7 @@
 {-# LANGUAGE CPP #-}
 module Tests where
 
-import Test.QuickCheck
 import Test.Tasty.HUnit
-import Text.RawString.QQ
 import Data.Either
 import Data.Aeson
 import Network.API.Mandrill.Messages.Types
