@@ -5,13 +5,14 @@
 module Network.API.Mandrill.Types where
 
 import           Network.API.Mandrill.Utils
+import           Network.API.Mandrill.Orphans()
 import           Test.QuickCheck
+import           Text.Email.Validate
 import           Data.Char
+import           Data.Maybe
 import           Data.Time
 import           Control.Applicative
 import           System.Locale (defaultTimeLocale)
-import           Data.Map (Map)
-import qualified Data.Map as Map
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Base64 as Base64
 import qualified Data.Text as T
@@ -90,7 +91,7 @@ deriveJSON defaultOptions { constructorTagModifier = map toLower } ''MandrillRec
 --------------------------------------------------------------------------------
 -- | An array of recipient information.
 data MandrillRecipient = MandrillRecipient {
-    _mrec_email :: !T.Text
+    _mrec_email :: EmailAddress
     -- ^ The email address of the recipient
   , _mrec_name :: Maybe T.Text
     -- ^ The optional display name to use for the recipient
@@ -102,17 +103,30 @@ data MandrillRecipient = MandrillRecipient {
 makeLenses ''MandrillRecipient
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillRecipient
 
+newRecipient :: EmailAddress -> MandrillRecipient
+newRecipient email = MandrillRecipient email Nothing Nothing
+
 instance Arbitrary MandrillRecipient where
-  arbitrary = pure $ MandrillRecipient "test@example.com" Nothing Nothing
+  arbitrary = pure MandrillRecipient {
+      _mrec_email = fromJust (emailAddress "test@example.com")
+    , _mrec_name  =  Nothing
+    , _mrec_type  =  Nothing
+    }
 
 --------------------------------------------------------------------------------
 newtype MandrillHtml = MandrillHtml Blaze.Html
 
-mkMandrillHtml :: T.Text -> MandrillHtml
-mkMandrillHtml = MandrillHtml . Blaze.toHtml
+unsafeMkMandrillHtml :: T.Text -> MandrillHtml
+unsafeMkMandrillHtml = MandrillHtml . Blaze.preEscapedToHtml
 
-mkMandrillHtml' :: Blaze.Html -> MandrillHtml
-mkMandrillHtml' = MandrillHtml
+-- This might be slightly hairy because it violates
+-- the nice encapsulation that newtypes offer.
+mkMandrillHtml :: Blaze.Html -> MandrillHtml
+mkMandrillHtml = MandrillHtml
+
+instance Monoid MandrillHtml where
+  mempty = MandrillHtml mempty
+  mappend (MandrillHtml m1) (MandrillHtml m2) = MandrillHtml (m1 <> m2)
 
 instance Show MandrillHtml where
   show (MandrillHtml h) = show $ Blaze.renderHtml h
@@ -191,7 +205,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ Optional full text content to be sent
  , _mmsg_subject :: !T.Text
    -- ^ The message subject
- , _mmsg_from_email :: !T.Text
+ , _mmsg_from_email :: EmailAddress
    -- ^ The sender email address
  , _mmsg_from_name :: Maybe T.Text
    -- ^ Optional from name to be used
@@ -274,7 +288,7 @@ instance Arbitrary MandrillMessage where
   arbitrary = MandrillMessage <$> arbitrary
                               <*> pure Nothing
                               <*> pure "Test Subject"
-                              <*> pure "sender@example.com"
+                              <*> pure (fromJust $ emailAddress "sender@example.com")
                               <*> pure Nothing
                               <*> resize 2 arbitrary
                               <*> pure emptyObject

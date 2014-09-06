@@ -1,9 +1,34 @@
 [![Build Status](https://travis-ci.org/adinapoli/mandrill.svg?branch=master)](https://travis-ci.org/adinapoli/mandrill)
+[![Coverage Status](https://img.shields.io/coveralls/adinapoli/mandrill.svg)](https://coveralls.io/r/adinapoli/mandrill)A
 
 # Haskell Client for the Mandrill JSON API
 
 This module implement a low-level, 1:1 mapping API to
 the [Mandrill](http://mandrillapp.com) transactional email service.
+
+# Example
+
+This package was built with pragmatism and reuse in mind. This means
+this API comes in two flavours: an IO-based and an handy monad transformers
+which can be plugged in your stack of choice.
+Example:
+
+``` haskell
+{-# LANGUAGE OverloadedStrings #-}
+import Text.Email.Validate
+import Network.API.Mandrill
+
+main :: IO ()
+main = do
+  case validate "foo@example.com" of
+    Left err   -> print $ "Invalid email!" ++ show err
+    Right addr -> runMandrill "MYTOKENHERE" $ do
+      let msg = "<p>My Html</p>"
+      res <- sendEmail (newTextMessage addr addr "Hello" msg)
+      case res of
+        MandrillSuccess k -> liftIO (print k)
+        MandrillFailure f -> liftIO (print f)
+```
 
 # Supported API versions
 
