@@ -9,7 +9,7 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 # Example
 
 This package was built with pragmatism and reuse in mind. This means
-this API comes in two flavours: an IO-based and an handy monad transformers
+this API comes in two flavours: an IO-based and an handy monad transformer
 which can be plugged in your stack of choice.
 Example:
 
@@ -24,7 +24,7 @@ main = do
     Left err   -> print $ "Invalid email!" ++ show err
     Right addr -> runMandrill "MYTOKENHERE" $ do
       let msg = "<p>My Html</p>"
-      res <- sendEmail (newTextMessage addr addr "Hello" msg)
+      res <- sendEmail (newTextMessage addr [addr] "Hello" msg)
       case res of
         MandrillSuccess k -> liftIO (print k)
         MandrillFailure f -> liftIO (print f)
@@ -60,3 +60,8 @@ And finally execute the testsuite:
 ```
 cabal test
 ```
+
+# Contributions
+This library scratches my own itches, but please fork away!
+Pull requests are encouraged to implement the part of the API
+you need.
