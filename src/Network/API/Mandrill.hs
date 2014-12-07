@@ -136,8 +136,8 @@ sendEmail :: MonadIO m
           => MandrillMessage
           -> MandrillT m (MandrillResponse [MessagesResponse])
 sendEmail msg = do
-  key <- ask
-  liftIO $ send key msg (Just True) Nothing Nothing
+  (key, mgr) <- ask
+  liftIO $ send key msg (Just True) Nothing Nothing (Just mgr)
 
 
 --------------------------------------------------------------------------------
@@ -145,6 +145,6 @@ sendTextEmail :: MonadIO m
               => MandrillMessage
               -> MandrillT m (MandrillResponse [MessagesResponse])
 sendTextEmail msg = do
-  key <- ask
+  (key, mgr) <- ask
   now <- liftIO getCurrentTime
-  liftIO $ send key msg (Just True) Nothing (Just now)
+  liftIO $ send key msg (Just True) Nothing (Just now) (Just mgr)
