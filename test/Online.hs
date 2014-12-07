@@ -20,21 +20,21 @@ import qualified Network.API.Mandrill.Users as API
 --
 testOnlineUsersInfo :: MandrillKey -> Assertion
 testOnlineUsersInfo k = do
-  res <- API.info k
+  res <- API.info k Nothing
   case res of
     MandrillSuccess _ -> return ()
     MandrillFailure e -> fail $ "users/info.json " ++ show e
 
 testOnlineUsersPing2 :: MandrillKey -> Assertion
 testOnlineUsersPing2 k = do
-  res <- API.ping2 k
+  res <- API.ping2 k Nothing
   case res of
     MandrillSuccess _ -> return ()
     MandrillFailure e -> fail $ "users/ping2.json " ++ show e
 
 testOnlineUsersSenders :: MandrillKey -> Assertion
 testOnlineUsersSenders k = do
-  res <- API.senders k
+  res <- API.senders k Nothing
   case res of
     MandrillSuccess _ -> return ()
     MandrillFailure e -> fail $ "users/senders.json " ++ show e
@@ -46,7 +46,7 @@ testOnlineUsersSenders k = do
 testOnlineMessagesSend :: MandrillKey -> Assertion
 testOnlineMessagesSend k = do
   msg <- generate arbitrary
-  res <- API.send k msg Nothing Nothing Nothing
+  res <- API.send k msg Nothing Nothing Nothing Nothing
   case res of
     MandrillSuccess _ -> return ()
     MandrillFailure e -> fail $ "messages/send.json " ++ show e

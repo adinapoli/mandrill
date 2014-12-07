@@ -5,6 +5,7 @@ import           Network.API.Mandrill.Types
 import           Network.API.Mandrill.Messages.Types
 import           Network.API.Mandrill.Settings
 import           Network.API.Mandrill.HTTP
+import           Network.HTTP.Client
 import           Data.Time
 import qualified Data.Text as T
 
@@ -20,6 +21,6 @@ send :: MandrillKey
      -- ^ ip_pool
      -> Maybe UTCTime
      -- ^ send_at
+     -> Maybe Manager
      -> IO (MandrillResponse [MessagesResponse])
-send k msg async ip_pool send_at =
-  toMandrillResponse MessagesSend (MessagesSendRq k msg async ip_pool send_at)
+send k msg async ip_pool send_at = toMandrillResponse MessagesSend (MessagesSendRq k msg async ip_pool send_at)
