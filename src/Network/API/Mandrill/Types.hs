@@ -135,7 +135,7 @@ instance ToJSON MandrillHtml where
   toJSON (MandrillHtml h) = String . TL.toStrict . Blaze.renderHtml $ h
 
 instance FromJSON MandrillHtml where
-  parseJSON (String h) = return $ MandrillHtml (Blaze.toHtml h)
+  parseJSON (String h) = return $ MandrillHtml (Blaze.preEscapedToHtml h)
   parseJSON v = typeMismatch "Expecting a String for MandrillHtml" v
 
 instance Arbitrary MandrillHtml where
