@@ -13,10 +13,11 @@ import           Data.Char
 import           Data.Maybe
 import           Data.Time
 import           Control.Applicative
+import           Data.Time (ParseTime)
 #if MIN_VERSION_time(1,5,0)
-import Data.Time.Format (defaultTimeLocale)
+import Data.Time.Format (TimeLocale, defaultTimeLocale)
 #else
-import System.Locale (defaultTimeLocale)
+import System.Locale (TimeLocale, defaultTimeLocale)
 #endif
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Base64 as Base64
@@ -31,6 +32,13 @@ import           Data.Aeson.TH
 import qualified Text.Blaze.Html as Blaze
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 
+
+timeParse :: ParseTime t => TimeLocale -> String -> String -> Maybe t
+#if MIN_VERSION_time(1,5,0)
+timeParse = parseTimeM True
+#else
+timeParse = parseTime
+#endif
 
 --------------------------------------------------------------------------------
 data MandrillError = MandrillError {
@@ -334,6 +342,6 @@ instance ToJSON MandrillDate where
 
 instance FromJSON MandrillDate where
   parseJSON = withText "MandrillDate" $ \t ->
-      case parseTimeM True defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
+      case timeParse defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
         Just d -> pure $ MandrillDate d
         _      -> fail "could not parse Mandrill date"
