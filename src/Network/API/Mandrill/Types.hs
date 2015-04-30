@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
@@ -12,7 +13,11 @@ import           Data.Char
 import           Data.Maybe
 import           Data.Time
 import           Control.Applicative
-import           System.Locale (defaultTimeLocale)
+#if MIN_VERSION_time(1,5,0)
+import Data.Time.Format (defaultTimeLocale)
+#else
+import System.Locale (defaultTimeLocale)
+#endif
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Base64 as Base64
 import qualified Data.Text as T
@@ -329,6 +334,6 @@ instance ToJSON MandrillDate where
 
 instance FromJSON MandrillDate where
   parseJSON = withText "MandrillDate" $ \t ->
-      case parseTime defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
+      case parseTimeM True defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
         Just d -> pure $ MandrillDate d
         _      -> fail "could not parse Mandrill date"
