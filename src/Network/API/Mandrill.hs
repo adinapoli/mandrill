@@ -12,6 +12,7 @@ module Network.API.Mandrill (
   , emptyMessage
   , newTextMessage
   , newHtmlMessage
+  , newTemplateMessage
   , liftIO
 
   -- * Appendix: Example Usage
@@ -106,6 +107,16 @@ newHtmlMessage :: EmailAddress
 newHtmlMessage f t subj html = let body = mkMandrillHtml html in
   ((mmsg_html .~ body) . (mmsg_subject .~ subj)) $ (emptyMessage f t)
 
+--------------------------------------------------------------------------------
+-- | Create a new template message (no HTML).
+newTemplateMessage :: EmailAddress
+                   -- ^ Sender email
+                   -> [EmailAddress]
+                   -- ^ Receivers email
+                   -> T.Text
+                   -- ^ Subject
+                   -> MandrillMessage
+newTemplateMessage f t subj = (mmsg_subject .~ subj) $ (emptyMessage f t)
 
 --------------------------------------------------------------------------------
 -- | Create a new textual message. By default Mandrill doesn't require you
