@@ -337,8 +337,8 @@ data MandrillTemplateContent = MandrillTemplateContent {
   , _mtc_content :: T.Text
   } deriving Show
 
-makeLenses ''MandrilTemplateContent
-deriveJSON defaultOptions { fieldLabelModifier = drop 5 } ''MandrilTemplateContent
+makeLenses ''MandrillTemplateContent
+deriveJSON defaultOptions { fieldLabelModifier = drop 5 } ''MandrillTemplateContent
 
 --------------------------------------------------------------------------------
 type MandrillKey = T.Text
