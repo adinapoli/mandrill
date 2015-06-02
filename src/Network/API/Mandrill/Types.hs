@@ -331,7 +331,18 @@ instance Arbitrary MandrillMessage where
                               <*> pure []
 
 --------------------------------------------------------------------------------
+-- | Key value pair for replacing content in templates via 'Editable Regions'
+data MandrillTemplateContent = MandrillTemplateContent {
+    _mtc_name    :: T.Text
+  , _mtc_content :: T.Text
+  } deriving Show
+
+makeLenses ''MandrillTemplateContent
+deriveJSON defaultOptions { fieldLabelModifier = drop 5 } ''MandrillTemplateContent
+
+--------------------------------------------------------------------------------
 type MandrillKey = T.Text
+type MandrillTemplate = T.Text
 
 newtype MandrillDate = MandrillDate {
   fromMandrillDate :: UTCTime

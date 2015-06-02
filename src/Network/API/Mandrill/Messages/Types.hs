@@ -27,6 +27,19 @@ data MessagesSendRq = MessagesSendRq {
 makeLenses ''MessagesSendRq
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MessagesSendRq
 
+--------------------------------------------------------------------------------
+data MessagesSendTemplateRq = MessagesSendTemplateRq {
+    _mstrq_key              :: MandrillKey
+  , _mstrq_template_name    :: T.Text
+  , _mstrq_template_content :: [MandrillTemplateContent]
+  , _mstrq_message          :: MandrillMessage
+  , _mstrq_async            :: Maybe Bool
+  , _mstrq_ip_pool          :: Maybe T.Text
+  , _mstrq_send_at          :: Maybe UTCTime
+  } deriving Show
+
+makeLenses ''MessagesSendTemplateRq
+deriveJSON defaultOptions { fieldLabelModifier = drop 7 } ''MessagesSendTemplateRq
 
 --------------------------------------------------------------------------------
 data MessagesResponse = MessagesResponse {
