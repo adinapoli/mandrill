@@ -1,5 +1,5 @@
 name:                mandrill
-version:             0.2.2.1
+version:             0.3.0.0
 synopsis:            Library for interfacing with the Mandrill JSON API
 description:         Pure Haskell client for the Mandrill JSON API
 license:             MIT
@@ -28,7 +28,6 @@ library
   other-modules:
     Network.API.Mandrill.Utils
     Network.API.Mandrill.HTTP
-    Network.API.Mandrill.Orphans
   -- other-extensions:
   build-depends:
       base >=4.6 && < 5
@@ -51,6 +50,7 @@ library
     src
   default-language:
     Haskell2010
+
   ghc-options:
     -funbox-strict-fields
 

@@ -9,6 +9,7 @@
 module Network.API.Mandrill (
     module M
   , sendEmail
+  , sendTextEmail
   , emptyMessage
   , newTextMessage
   , newHtmlMessage
@@ -62,7 +63,7 @@ emptyMessage f t = MandrillMessage {
    _mmsg_html = mempty
  , _mmsg_text = Nothing
  , _mmsg_subject = T.empty
- , _mmsg_from_email = f
+ , _mmsg_from_email = (MandrillEmail f)
  , _mmsg_from_name = Nothing
  , _mmsg_to = map newRecipient t
  , _mmsg_headers = JSON.Null

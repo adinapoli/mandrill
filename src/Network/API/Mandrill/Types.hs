@@ -6,14 +6,12 @@
 module Network.API.Mandrill.Types where
 
 import           Network.API.Mandrill.Utils
-import           Network.API.Mandrill.Orphans()
 import           Test.QuickCheck
 import           Text.Email.Validate
 import           Data.Char
 import           Data.Maybe
 import           Data.Time
 import           Control.Applicative
-import           Data.Time (ParseTime)
 #if MIN_VERSION_time(1,5,0)
 import Data.Time.Format (TimeLocale, defaultTimeLocale)
 #else
@@ -102,9 +100,22 @@ deriveJSON defaultOptions { constructorTagModifier = map toLower } ''MandrillRec
 
 
 --------------------------------------------------------------------------------
+newtype MandrillEmail = MandrillEmail EmailAddress deriving Show
+
+instance ToJSON MandrillEmail where
+  toJSON (MandrillEmail e) = String . TL.decodeUtf8 . toByteString $ e
+
+instance FromJSON MandrillEmail where
+  parseJSON (String s) = case validate (TL.encodeUtf8 s) of
+    Left err -> fail err
+    Right v  -> return . MandrillEmail $ v
+  parseJSON o = typeMismatch "Expecting a String for MandrillEmail." o
+
+
+--------------------------------------------------------------------------------
 -- | An array of recipient information.
 data MandrillRecipient = MandrillRecipient {
-    _mrec_email :: EmailAddress
+    _mrec_email :: MandrillEmail
     -- ^ The email address of the recipient
   , _mrec_name :: Maybe T.Text
     -- ^ The optional display name to use for the recipient
@@ -117,11 +128,11 @@ makeLenses ''MandrillRecipient
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillRecipient
 
 newRecipient :: EmailAddress -> MandrillRecipient
-newRecipient email = MandrillRecipient email Nothing Nothing
+newRecipient email = MandrillRecipient (MandrillEmail email) Nothing Nothing
 
 instance Arbitrary MandrillRecipient where
   arbitrary = pure MandrillRecipient {
-      _mrec_email = fromJust (emailAddress "test@example.com")
+      _mrec_email = MandrillEmail $ fromJust (emailAddress "test@example.com")
     , _mrec_name  =  Nothing
     , _mrec_type  =  Nothing
     }
@@ -218,7 +229,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ Optional full text content to be sent
  , _mmsg_subject :: !T.Text
    -- ^ The message subject
- , _mmsg_from_email :: EmailAddress
+ , _mmsg_from_email :: MandrillEmail
    -- ^ The sender email address
  , _mmsg_from_name :: Maybe T.Text
    -- ^ Optional from name to be used
@@ -301,7 +312,7 @@ instance Arbitrary MandrillMessage where
   arbitrary = MandrillMessage <$> arbitrary
                               <*> pure Nothing
                               <*> pure "Test Subject"
-                              <*> pure (fromJust $ emailAddress "sender@example.com")
+                              <*> pure (MandrillEmail . fromJust $ emailAddress "sender@example.com")
                               <*> pure Nothing
                               <*> resize 2 arbitrary
                               <*> pure emptyObject
