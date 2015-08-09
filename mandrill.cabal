@@ -15,9 +15,6 @@ source-repository head
   type:     git
   location: https://github.com/adinapoli/mandrill
 
-flag debug-th
-  default: False
-
 library
   exposed-modules:
     Network.API.Mandrill
@@ -53,9 +50,6 @@ library
     src
   default-language:
     Haskell2010
-
-  if flag(debug-th)
-    ghc-options: -ddump-splices -dth-dec-file
 
   ghc-options:
     -funbox-strict-fields

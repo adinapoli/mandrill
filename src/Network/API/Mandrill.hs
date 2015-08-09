@@ -9,6 +9,7 @@
 module Network.API.Mandrill (
     module M
   , sendEmail
+  , sendTextEmail
   , emptyMessage
   , newTextMessage
   , newHtmlMessage

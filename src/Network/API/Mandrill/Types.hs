@@ -11,8 +11,6 @@ import           Text.Email.Validate
 import           Data.Char
 import           Data.Maybe
 import           Data.Time
-import           Control.Applicative
-import           Data.Time (ParseTime)
 #if MIN_VERSION_time(1,5,0)
 import Data.Time.Format (TimeLocale, defaultTimeLocale)
 #else
