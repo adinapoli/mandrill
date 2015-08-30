@@ -1,5 +1,5 @@
 name:                mandrill
-version:             0.3.0.0
+version:             0.4.0.0
 synopsis:            Library for interfacing with the Mandrill JSON API
 description:         Pure Haskell client for the Mandrill JSON API
 license:             MIT

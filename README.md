@@ -6,6 +6,14 @@
 This module implement a low-level, 1:1 mapping API to
 the [Mandrill](http://mandrillapp.com) transactional email service.
 
+# Changelog
+
+## Version 0.4.0.0
+
+* Modified the `Base64ByteString` type to accept another constructor. This
+  allows the user to pass already-encoded Base64 strings which might be coming
+  upstream.
+
 # Example
 
 This package was built with pragmatism and reuse in mind. This means

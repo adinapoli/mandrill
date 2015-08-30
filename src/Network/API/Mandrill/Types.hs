@@ -196,15 +196,19 @@ makeLenses ''MandrillMetadata
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMetadata
 
 
-newtype Base64ByteString = B64BS B.ByteString deriving Show
+data Base64ByteString =
+    EncodedB64BS B.ByteString
+  -- ^ An already-encoded Base64 ByteString.
+  | PlainBS B.ByteString
+  -- ^ A plain Base64 ByteString which requires encoding.
+  deriving Show
 
 instance ToJSON Base64ByteString where
-  toJSON (B64BS bs) = String . TL.decodeUtf8 . Base64.encode $ bs
+  toJSON (PlainBS bs)      = String . TL.decodeUtf8 . Base64.encode $ bs
+  toJSON (EncodedB64BS bs) = String . TL.decodeUtf8 $ bs
 
 instance FromJSON Base64ByteString where
-  parseJSON (String v) = case Base64.decode (TL.encodeUtf8 v) of
-    Left err -> fail err
-    Right rs -> return $ B64BS rs
+  parseJSON (String v) = pure $ EncodedB64BS (TL.encodeUtf8 v)
   parseJSON rest = typeMismatch "Base64ByteString must be a String." rest
 
 --------------------------------------------------------------------------------
