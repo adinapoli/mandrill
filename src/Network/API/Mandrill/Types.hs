@@ -190,7 +190,7 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMergeVars
 --------------------------------------------------------------------------------
 data MandrillMetadata = MandrillMetadata {
     _mmdt_rcpt :: !T.Text
-  , _mmdt_values :: MandrillVars
+  , _mmdt_values :: Object
   } deriving Show
 
 makeLenses ''MandrillMetadata
@@ -296,7 +296,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ optional string indicating the value to set for the utm_campaign
    -- tracking parameter. If this isn't provided the email's from address
    -- will be used instead.
- , _mmsg_metadata :: MandrillVars
+ , _mmsg_metadata :: Object
    -- ^ metadata an associative array of user metadata. Mandrill will store
    -- this metadata and make it available for retrieval.
    -- In addition, you can select up to 10 metadata fields to index
@@ -341,7 +341,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure Nothing
                               <*> pure []
                               <*> pure Nothing
-                              <*> pure emptyObject
+                              <*> pure H.empty
                               <*> pure []
                               <*> pure []
                               <*> pure []

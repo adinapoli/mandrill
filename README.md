@@ -12,6 +12,8 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 * Changed the MandrillHeaders type synonym from Value to Object.
 
+* Changed the mmsg\_metadata and mmdt_values fields from MandrillVars to Object.
+
 ## Version 0.4.0.0
 
 * Modified the `Base64ByteString` type to accept another constructor. This
