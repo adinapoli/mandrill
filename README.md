@@ -25,6 +25,8 @@ data MergeVar = MergeVar {
     }
 ```
 
+* Removed the `MandrillVars` type synonym.
+
 ## Version 0.4.0.0
 
 * Modified the `Base64ByteString` type to accept another constructor. This
