@@ -19,6 +19,7 @@ import System.Locale (TimeLocale, defaultTimeLocale)
 #endif
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Base64 as Base64
+import qualified Data.HashMap.Strict as H
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TL
 import qualified Data.Text.Lazy as TL
@@ -170,7 +171,7 @@ type MandrillTags = T.Text
 
 
 --------------------------------------------------------------------------------
-type MandrillHeaders = Value
+type MandrillHeaders = Object
 
 
 --------------------------------------------------------------------------------
@@ -266,7 +267,7 @@ data MandrillMessage = MandrillMessage {
  , _mmsg_tracking_domain :: Maybe T.Text
    -- ^ a custom domain to use for tracking opens and clicks instead of mandrillapp.com
  , _mmsg_signing_domain :: Maybe Bool
-   -- ^ a custom domain to use for SPF/DKIM signing instead of mandrill 
+   -- ^ a custom domain to use for SPF/DKIM signing instead of mandrill
    -- (for "via" or "on behalf of" in email clients)
  , _mmsg_return_path_domain :: Maybe Bool
    -- ^ a custom domain to use for the messages's return-path
@@ -319,7 +320,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure (MandrillEmail . fromJust $ emailAddress "sender@example.com")
                               <*> pure Nothing
                               <*> resize 2 arbitrary
-                              <*> pure emptyObject
+                              <*> pure H.empty
                               <*> pure Nothing
                               <*> pure Nothing
                               <*> pure Nothing
