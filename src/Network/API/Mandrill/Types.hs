@@ -177,11 +177,20 @@ type MandrillHeaders = Object
 --------------------------------------------------------------------------------
 type MandrillVars = Value
 
+--------------------------------------------------------------------------------
+
+data MergeVar = MergeVar {
+      _mv_name    :: !T.Text
+    , _mv_content :: Value
+    } deriving Show
+
+makeLenses ''MergeVar
+deriveJSON defaultOptions { fieldLabelModifier = drop 4 } ''MergeVar
 
 --------------------------------------------------------------------------------
 data MandrillMergeVars = MandrillMergeVars {
     _mmvr_rcpt :: !T.Text
-  , _mmvr_vars :: [MandrillVars]
+  , _mmvr_vars :: [MergeVar]
   } deriving Show
 
 makeLenses ''MandrillMergeVars
@@ -275,7 +284,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ whether to evaluate merge tags in the message.
    -- Will automatically be set to true if either merge_vars
    -- or global_merge_vars are provided.
- , _mmsg_global_merge_vars :: [MandrillVars]
+ , _mmsg_global_merge_vars :: [MergeVar]
    -- ^ global merge variables to use for all recipients. You can override these per recipient.
  , _mmsg_merge_vars :: [MandrillMergeVars]
    -- ^ per-recipient merge variables, which override global merge variables with the same name.
