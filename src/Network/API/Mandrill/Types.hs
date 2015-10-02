@@ -19,6 +19,7 @@ import System.Locale (TimeLocale, defaultTimeLocale)
 #endif
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Base64 as Base64
+import qualified Data.HashMap.Strict as H
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as TL
 import qualified Data.Text.Lazy as TL
@@ -170,17 +171,23 @@ type MandrillTags = T.Text
 
 
 --------------------------------------------------------------------------------
-type MandrillHeaders = Value
+type MandrillHeaders = Object
 
 
 --------------------------------------------------------------------------------
-type MandrillVars = Value
 
+data MergeVar = MergeVar {
+      _mv_name    :: !T.Text
+    , _mv_content :: Value
+    } deriving Show
+
+makeLenses ''MergeVar
+deriveJSON defaultOptions { fieldLabelModifier = drop 4 } ''MergeVar
 
 --------------------------------------------------------------------------------
 data MandrillMergeVars = MandrillMergeVars {
     _mmvr_rcpt :: !T.Text
-  , _mmvr_vars :: [MandrillVars]
+  , _mmvr_vars :: [MergeVar]
   } deriving Show
 
 makeLenses ''MandrillMergeVars
@@ -189,7 +196,7 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMergeVars
 --------------------------------------------------------------------------------
 data MandrillMetadata = MandrillMetadata {
     _mmdt_rcpt :: !T.Text
-  , _mmdt_values :: MandrillVars
+  , _mmdt_values :: Object
   } deriving Show
 
 makeLenses ''MandrillMetadata
@@ -266,7 +273,7 @@ data MandrillMessage = MandrillMessage {
  , _mmsg_tracking_domain :: Maybe T.Text
    -- ^ a custom domain to use for tracking opens and clicks instead of mandrillapp.com
  , _mmsg_signing_domain :: Maybe Bool
-   -- ^ a custom domain to use for SPF/DKIM signing instead of mandrill 
+   -- ^ a custom domain to use for SPF/DKIM signing instead of mandrill
    -- (for "via" or "on behalf of" in email clients)
  , _mmsg_return_path_domain :: Maybe Bool
    -- ^ a custom domain to use for the messages's return-path
@@ -274,7 +281,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ whether to evaluate merge tags in the message.
    -- Will automatically be set to true if either merge_vars
    -- or global_merge_vars are provided.
- , _mmsg_global_merge_vars :: [MandrillVars]
+ , _mmsg_global_merge_vars :: [MergeVar]
    -- ^ global merge variables to use for all recipients. You can override these per recipient.
  , _mmsg_merge_vars :: [MandrillMergeVars]
    -- ^ per-recipient merge variables, which override global merge variables with the same name.
@@ -295,7 +302,7 @@ data MandrillMessage = MandrillMessage {
    -- ^ optional string indicating the value to set for the utm_campaign
    -- tracking parameter. If this isn't provided the email's from address
    -- will be used instead.
- , _mmsg_metadata :: MandrillVars
+ , _mmsg_metadata :: Object
    -- ^ metadata an associative array of user metadata. Mandrill will store
    -- this metadata and make it available for retrieval.
    -- In addition, you can select up to 10 metadata fields to index
@@ -319,7 +326,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure (MandrillEmail . fromJust $ emailAddress "sender@example.com")
                               <*> pure Nothing
                               <*> resize 2 arbitrary
-                              <*> pure emptyObject
+                              <*> pure H.empty
                               <*> pure Nothing
                               <*> pure Nothing
                               <*> pure Nothing
@@ -340,7 +347,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure Nothing
                               <*> pure []
                               <*> pure Nothing
-                              <*> pure emptyObject
+                              <*> pure H.empty
                               <*> pure []
                               <*> pure []
                               <*> pure []

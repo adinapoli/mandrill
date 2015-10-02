@@ -32,6 +32,7 @@ import Data.Monoid
 import Text.Email.Validate
 import qualified Data.Text as T
 import qualified Data.Aeson as JSON
+import qualified Data.HashMap.Strict as H
 
 {- $exampleusage
 
@@ -40,7 +41,7 @@ The API was designed to allow to get you started as quickly as possible:
 > {-# LANGUAGE OverloadedStrings #-}
 > import Text.Email.Validate
 > import Network.API.Mandrill
-> 
+>
 > main :: IO ()
 > main = do
 >   case validate "foo@example.com" of
@@ -66,7 +67,7 @@ emptyMessage f t = MandrillMessage {
  , _mmsg_from_email = (MandrillEmail f)
  , _mmsg_from_name = Nothing
  , _mmsg_to = map newRecipient t
- , _mmsg_headers = JSON.Null
+ , _mmsg_headers = H.empty
  , _mmsg_important = Nothing
  , _mmsg_track_opens = Nothing
  , _mmsg_track_clicks = Nothing
@@ -87,7 +88,7 @@ emptyMessage f t = MandrillMessage {
  , _mmsg_subaccount = Nothing
  , _mmsg_google_analytics_domains = []
  , _mmsg_google_analytics_campaign = Nothing
- , _mmsg_metadata = JSON.Null
+ , _mmsg_metadata = H.empty
  , _mmsg_recipient_metadata = []
  , _mmsg_attachments = []
  , _mmsg_images = []

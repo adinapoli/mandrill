@@ -8,6 +8,25 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.0.0
+
+* Changed the `MandrillHeaders` type synonym from `Value` to `Object`.
+
+* Changed the `mmsg_metadata` and `mmdt_values` fields from `MandrillVars` to `Object`.
+
+* Changed the `mmsg_global_merge_vars` and `mmvr_vars` fields from `[MandrillVars]` to `[MergeVar]`
+
+* Added the `MergeVar` data type:
+
+```haskell
+data MergeVar = MergeVar {
+      _mv_name    :: !Text
+    , _mv_content :: Value
+    }
+```
+
+* Removed the `MandrillVars` type synonym.
+
 ## Version 0.4.0.0
 
 * Modified the `Base64ByteString` type to accept another constructor. This
