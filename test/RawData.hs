@@ -200,3 +200,13 @@ sendData = [r|
     "send_at": "2014-08-17T14:23:02.954Z"
 }
 |]
+
+
+messagesResponseRejected = [r|
+[ { "email"        : "foo@bar.com",
+    "status"       : "rejected",
+    "_id"          : "abc123",
+    "reject_reason": "unsigned"
+  }
+]
+|]
