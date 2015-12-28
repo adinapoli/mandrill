@@ -1,13 +1,14 @@
 {-# LANGUAGE CPP #-}
 module Tests where
 
-import Test.Tasty.HUnit
-import Data.Either
-import Data.Aeson
-import Network.API.Mandrill.Messages.Types
-import Network.API.Mandrill.Users.Types
-import qualified Data.ByteString.Char8 as C8
-import RawData
+import           Data.Aeson
+import qualified Data.ByteString.Char8               as C8
+import           Data.Either
+import           Network.API.Mandrill.Messages.Types
+import           Network.API.Mandrill.Users.Types
+import           Network.API.Mandrill.Types
+import           RawData
+import           Test.Tasty.HUnit
 
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ <= 706
 isRight :: Either a b -> Bool
@@ -40,3 +41,11 @@ testUsersSenders = do
   where
     parsePayload :: Either String UsersSendersResponse
     parsePayload = eitherDecodeStrict . C8.pack $ usersSendersData
+
+testMessagesResponseRejected :: Assertion
+testMessagesResponseRejected = do
+  assertBool ("send.json response: Parsing failed" ++ show parsePayload)
+             (isRight parsePayload)
+  where
+    parsePayload :: Either String (MandrillResponse [MessagesResponse])
+    parsePayload = eitherDecodeStrict . C8.pack $ messagesResponseRejected

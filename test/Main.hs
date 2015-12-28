@@ -39,5 +39,6 @@ main = do
            testCase "users/info.json API parsing"    testUsersInfo
          , testCase "users/senders.json API parsing" testUsersSenders
          , testCase "messages/send.json API parsing" testMessagesSend
+         , testCase "messages/send.json API response parsing" testMessagesResponseRejected
          ]
      ]

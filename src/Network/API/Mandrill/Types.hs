@@ -70,6 +70,7 @@ data MandrillRejectReason = RR_HardBounce
                           | RR_InvalidSender
                           | RR_Invalid
                           | RR_TestModeLimit
+                          | RR_Unsigned
                           | RR_Rule deriving Show
 
 deriveJSON defaultOptions {
