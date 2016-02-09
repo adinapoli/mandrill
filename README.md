@@ -8,6 +8,10 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.1.0
+
+* Relaxed the constraint on `aeson` to allow `0.11.0.0`.
+
 ## Version 0.5.0.0
 
 * Changed the `MandrillHeaders` type synonym from `Value` to `Object`.

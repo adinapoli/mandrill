@@ -1,0 +1,10 @@
+flags: {}
+packages:
+- '.'
+- location:
+    git: git@github.com:bos/aeson.git
+    commit: 674eee5972864f9a32e27e9a827693edef0ad737
+extra-deps:
+  - aeson-0.11.0.0
+  - fail-4.9.0.0
+resolver: lts-5.2
