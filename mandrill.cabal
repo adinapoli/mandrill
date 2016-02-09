@@ -1,5 +1,5 @@
 name:                mandrill
-version:             0.5.0.0
+version:             0.5.1.0
 synopsis:            Library for interfacing with the Mandrill JSON API
 description:         Pure Haskell client for the Mandrill JSON API
 license:             MIT
@@ -8,7 +8,7 @@ author:              Alfredo Di Napoli
 maintainer:          alfredo.dinapoli@gmail.com
 category:            Network
 build-type:          Simple
-tested-with:         GHC == 7.4, GHC == 7.6, GHC == 7.8
+tested-with:         GHC == 7.4, GHC == 7.6, GHC == 7.8, GHC == 7.10.2
 cabal-version:       >=1.10
 
 source-repository head
@@ -38,7 +38,7 @@ library
     , http-types >= 0.8.0
     , http-client >= 0.3.0
     , http-client-tls >= 0.2.0.0
-    , aeson >= 0.7.0.3 && < 0.11.0.0
+    , aeson >= 0.7.0.3 && < 0.12.0.0
     , lens >= 4.0
     , blaze-html >= 0.5.0.0
     , QuickCheck >= 2.6 && < 2.9
