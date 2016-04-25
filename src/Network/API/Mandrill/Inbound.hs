@@ -55,10 +55,6 @@ data RouteAddRq =
 makeLenses ''RouteAddRq
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''RouteAddRq
 
-
-
-
-
 addDomain :: MandrillKey
      -- ^ The API key
      -> Text

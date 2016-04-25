@@ -55,14 +55,14 @@ testOnlineMessagesSend k = do
 --
 -- Inbound calls
 --
-
+testOnlineDomainAdd :: MandrillKey -> Assertion
 testOnlineDomainAdd k = do
   res <- API.addDomain k "foobar.com" Nothing
   case res of
    MandrillSuccess a -> print a
    MandrillFailure e -> fail $ "inbound/add-domain.json " ++ show e
 
-
+testOnlineRouteAdd :: MandrillKey -> Assertion
 testOnlineRouteAdd k = do
   res <- API.addRoute k "foobar.com" "mail-*" "http://requestb.in/19a4frw1"  Nothing
   case res of
