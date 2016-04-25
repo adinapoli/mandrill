@@ -1,14 +1,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import           System.Environment
 import           Data.Monoid
-import           Tests
+import qualified Data.Text             as T
 import           Online
+import           System.Environment
 import           Test.Tasty
 import           Test.Tasty.HUnit
 import           Test.Tasty.QuickCheck
-import qualified Data.Text as T
+import           Tests
 
 ----------------------------------------------------------------------
 withQuickCheckDepth :: TestName -> Int -> [TestTree] -> TestTree
@@ -23,10 +23,12 @@ onlineTestsIfEnabled = do
     Nothing -> return []
     Just k  -> return [
                  testGroup "Mandrill online tests" [
-                   testCase "users/info.json" (testOnlineUsersInfo k)
-                 , testCase "users/ping2.json" (testOnlineUsersPing2 k)
-                 , testCase "users/senders.json" (testOnlineUsersSenders k)
-                 , testCase "messages/send.json" (testOnlineMessagesSend k)
+                   testCase "users/info.json"        (testOnlineUsersInfo k)
+                 , testCase "users/ping2.json"       (testOnlineUsersPing2 k)
+                 , testCase "users/senders.json"     (testOnlineUsersSenders k)
+                 , testCase "messages/send.json"     (testOnlineMessagesSend k)
+                 , testCase "inbound/addDomain.json" (testOnlineDomainAdd k)
+                 , testCase "inbound/addRoute.json"  (testOnlineRouteAdd k)
                  ]]
 
 ----------------------------------------------------------------------
@@ -40,5 +42,7 @@ main = do
          , testCase "users/senders.json API parsing" testUsersSenders
          , testCase "messages/send.json API parsing" testMessagesSend
          , testCase "messages/send.json API response parsing" testMessagesResponseRejected
+         , testCase "inbound/add-route.json API response parsing" testRouteAdd
+         , testCase "inbound/add-domain.json API response parsing" testDomainAdd
          ]
      ]

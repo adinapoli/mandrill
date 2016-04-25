@@ -1,13 +1,13 @@
 
 module Network.API.Mandrill.Messages where
 
-import           Network.API.Mandrill.Types
+import qualified Data.Text                           as T
+import           Data.Time
+import           Network.API.Mandrill.HTTP
 import           Network.API.Mandrill.Messages.Types
 import           Network.API.Mandrill.Settings
-import           Network.API.Mandrill.HTTP
+import           Network.API.Mandrill.Types
 import           Network.HTTP.Client
-import           Data.Time
-import qualified Data.Text as T
 
 --------------------------------------------------------------------------------
 -- | Send a new transactional message through Mandrill

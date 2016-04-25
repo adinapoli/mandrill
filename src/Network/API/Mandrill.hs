@@ -20,19 +20,19 @@ module Network.API.Mandrill (
   -- $exampleusage
   ) where
 
-import Control.Monad.Reader
-import Control.Lens
-import Data.Time
-import Text.Blaze.Html
-import Network.API.Mandrill.Types as M
-import Network.API.Mandrill.Messages as M
-import Network.API.Mandrill.Messages.Types as M
-import Network.API.Mandrill.Trans as M
-import Data.Monoid
-import Text.Email.Validate
-import qualified Data.Text as T
-import qualified Data.Aeson as JSON
-import qualified Data.HashMap.Strict as H
+import           Control.Lens
+import           Control.Monad.Reader
+import qualified Data.Aeson                          as JSON
+import qualified Data.HashMap.Strict                 as H
+import           Data.Monoid
+import qualified Data.Text                           as T
+import           Data.Time
+import           Network.API.Mandrill.Messages       as M
+import           Network.API.Mandrill.Messages.Types as M
+import           Network.API.Mandrill.Trans          as M
+import           Network.API.Mandrill.Types          as M
+import           Text.Blaze.Html
+import           Text.Email.Validate
 
 {- $exampleusage
 
@@ -144,7 +144,7 @@ newTextMessage f t subj txt = let body = unsafeMkMandrillHtml txt in
 -- 'MandrillMessage' and this function will send an email inside a
 -- 'MandrillT' transformer. You are not forced to use the 'MandrillT' context
 -- though. Have a look at "Network.API.Mandrill.Messages" for an IO-based,
--- low lever function for sending email.
+-- low level function for sending email.
 sendEmail :: MonadIO m
           => MandrillMessage
           -> MandrillT m (MandrillResponse [MessagesResponse])

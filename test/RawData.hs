@@ -1,10 +1,10 @@
 {-# LANGUAGE QuasiQuotes #-}
 module RawData where
 
-import Test.QuickCheck
-import Test.Tasty.HUnit
-import Text.RawString.QQ
-import Data.Either
+import           Data.Either
+import           Test.QuickCheck
+import           Test.Tasty.HUnit
+import           Text.RawString.QQ
 
 usersInfoData :: String
 usersInfoData = [r|
@@ -209,4 +209,22 @@ messagesResponseRejected = [r|
     "reject_reason": "unsigned"
   }
 ]
+|]
+
+
+domainAdd = [r|
+{
+    "domain": "inbound.example.com",
+    "created_at": "2013-01-01 15:30:27",
+    "valid_mx": true
+}
+|]
+
+
+routeAdd= [r|
+{
+    "id": "7.23",
+    "pattern": "mailbox-*",
+    "url": "http://example.com/webhook-url"
+}
 |]

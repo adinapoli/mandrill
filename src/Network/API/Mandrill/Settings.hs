@@ -15,16 +15,23 @@ data MandrillCalls =
   -- Messages API
   | MessagesSend
   | MessagesSendTemplate
-  | MessagesSearch deriving Show
+  | MessagesSearch
+  -- Inbound API
+  | RoutesAdd
+  | DomainsAdd
+
+  deriving Show
 
 class MandrillEndpoint ep where
   toUrl :: ep -> T.Text
 
 instance MandrillEndpoint MandrillCalls where
-  toUrl UsersInfo = "users/info.json"
-  toUrl UsersPing = "users/ping.json"
-  toUrl UsersPing2 = "users/ping2.json"
-  toUrl UsersSenders = "users/senders.json"
-  toUrl MessagesSend = "messages/send.json"
+  toUrl UsersInfo            = "users/info.json"
+  toUrl UsersPing            = "users/ping.json"
+  toUrl UsersPing2           = "users/ping2.json"
+  toUrl UsersSenders         = "users/senders.json"
+  toUrl MessagesSend         = "messages/send.json"
   toUrl MessagesSendTemplate = "messages/send-template.json"
-  toUrl MessagesSearch = "messages/search.json"
+  toUrl MessagesSearch       = "messages/search.json"
+  toUrl DomainsAdd           = "inbound/add-domain.json"
+  toUrl RoutesAdd            = "inbound/add-route.json"

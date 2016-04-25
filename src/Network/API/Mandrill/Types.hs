@@ -1,34 +1,34 @@
-{-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE CPP #-}
-{-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE CPP                 #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell     #-}
 module Network.API.Mandrill.Types where
 
-import           Network.API.Mandrill.Utils
-import           Test.QuickCheck
-import           Text.Email.Validate
+import           Control.Applicative
 import           Data.Char
 import           Data.Maybe
 import           Data.Time
-import           Control.Applicative
+import           Network.API.Mandrill.Utils
+import           Test.QuickCheck
+import           Text.Email.Validate
 #if MIN_VERSION_time(1,5,0)
-import Data.Time.Format (TimeLocale, defaultTimeLocale)
+import           Data.Time.Format              (TimeLocale, defaultTimeLocale)
 #else
-import System.Locale (TimeLocale, defaultTimeLocale)
+import           System.Locale                 (TimeLocale, defaultTimeLocale)
 #endif
-import qualified Data.ByteString as B
-import qualified Data.ByteString.Base64 as Base64
-import qualified Data.HashMap.Strict as H
-import qualified Data.Text as T
-import qualified Data.Text.Encoding as TL
-import qualified Data.Text.Lazy as TL
 import           Control.Lens
-import           Data.Monoid
 import           Data.Aeson
-import           Data.Aeson.Types
 import           Data.Aeson.TH
-import qualified Text.Blaze.Html as Blaze
+import           Data.Aeson.Types
+import qualified Data.ByteString               as B
+import qualified Data.ByteString.Base64        as Base64
+import qualified Data.HashMap.Strict           as H
+import           Data.Monoid
+import qualified Data.Text                     as T
+import qualified Data.Text.Encoding            as TL
+import qualified Data.Text.Lazy                as TL
+import qualified Text.Blaze.Html               as Blaze
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
 
 
@@ -41,9 +41,9 @@ timeParse = parseTime
 
 --------------------------------------------------------------------------------
 data MandrillError = MandrillError {
-    _merr_status :: !T.Text
-  , _merr_code :: !Int
-  , _merr_name :: !T.Text
+    _merr_status  :: !T.Text
+  , _merr_code    :: !Int
+  , _merr_name    :: !T.Text
   , _merr_message :: !T.Text
   } deriving Show
 
@@ -119,9 +119,9 @@ instance FromJSON MandrillEmail where
 data MandrillRecipient = MandrillRecipient {
     _mrec_email :: MandrillEmail
     -- ^ The email address of the recipient
-  , _mrec_name :: Maybe T.Text
+  , _mrec_name  :: Maybe T.Text
     -- ^ The optional display name to use for the recipient
-  , _mrec_type :: Maybe MandrillRecipientTag
+  , _mrec_type  :: Maybe MandrillRecipientTag
     -- ^ The header type to use for the recipient.
     --   defaults to "to" if not provided
   } deriving Show
@@ -196,7 +196,7 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMergeVars
 
 --------------------------------------------------------------------------------
 data MandrillMetadata = MandrillMetadata {
-    _mmdt_rcpt :: !T.Text
+    _mmdt_rcpt   :: !T.Text
   , _mmdt_values :: Object
   } deriving Show
 
@@ -221,8 +221,8 @@ instance FromJSON Base64ByteString where
 
 --------------------------------------------------------------------------------
 data MandrillWebContent = MandrillWebContent {
-    _mwct_type :: !T.Text
-  , _mwct_name :: !T.Text
+    _mwct_type    :: !T.Text
+  , _mwct_name    :: !T.Text
     -- ^ [for images] the Content ID of the image
     -- - use <img src="cid:THIS_VALUE"> to reference the image
     -- in your HTML content
@@ -235,67 +235,67 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillWebContent
 --------------------------------------------------------------------------------
 -- | The information on the message to send
 data MandrillMessage = MandrillMessage {
-   _mmsg_html :: MandrillHtml
+   _mmsg_html                      :: MandrillHtml
    -- ^ The full HTML content to be sent
- , _mmsg_text :: Maybe T.Text
+ , _mmsg_text                      :: Maybe T.Text
    -- ^ Optional full text content to be sent
- , _mmsg_subject :: !T.Text
+ , _mmsg_subject                   :: !T.Text
    -- ^ The message subject
- , _mmsg_from_email :: MandrillEmail
+ , _mmsg_from_email                :: MandrillEmail
    -- ^ The sender email address
- , _mmsg_from_name :: Maybe T.Text
+ , _mmsg_from_name                 :: Maybe T.Text
    -- ^ Optional from name to be used
- , _mmsg_to :: [MandrillRecipient]
+ , _mmsg_to                        :: [MandrillRecipient]
    -- ^ A list of recipient information
- , _mmsg_headers :: MandrillHeaders
+ , _mmsg_headers                   :: MandrillHeaders
    -- ^ optional extra headers to add to the message (most headers are allowed)
- , _mmsg_important :: Maybe Bool
+ , _mmsg_important                 :: Maybe Bool
    -- ^ whether or not this message is important, and should be delivered ahead
    -- of non-important messages
- , _mmsg_track_opens :: Maybe Bool
+ , _mmsg_track_opens               :: Maybe Bool
    -- ^ whether or not to turn on open tracking for the message
- , _mmsg_track_clicks :: Maybe Bool
+ , _mmsg_track_clicks              :: Maybe Bool
    -- ^ whether or not to turn on click tracking for the message
- , _mmsg_auto_text :: Maybe Bool
+ , _mmsg_auto_text                 :: Maybe Bool
    -- ^ whether or not to automatically generate a text part for messages that are not given text
- , _mmsg_auto_html :: Maybe Bool
+ , _mmsg_auto_html                 :: Maybe Bool
    -- ^ whether or not to automatically generate an HTML part for messages that are not given HTML
- , _mmsg_inline_css :: Maybe Bool
+ , _mmsg_inline_css                :: Maybe Bool
    -- ^ whether or not to automatically inline all CSS styles provided in the message HTML
    -- - only for HTML documents less than 256KB in size
- , _mmsg_url_strip_qs :: Maybe Bool
+ , _mmsg_url_strip_qs              :: Maybe Bool
    -- ^ whether or not to strip the query string from URLs when aggregating tracked URL data
- , _mmsg_preserve_recipients :: Maybe Bool
+ , _mmsg_preserve_recipients       :: Maybe Bool
    -- ^ whether or not to expose all recipients in to "To" header for each email
- , _mmsg_view_content_link :: Maybe Bool
+ , _mmsg_view_content_link         :: Maybe Bool
    -- ^ set to false to remove content logging for sensitive emails
- , _mmsg_bcc_address :: Maybe T.Text
+ , _mmsg_bcc_address               :: Maybe T.Text
    -- ^ an optional address to receive an exact copy of each recipient's email
- , _mmsg_tracking_domain :: Maybe T.Text
+ , _mmsg_tracking_domain           :: Maybe T.Text
    -- ^ a custom domain to use for tracking opens and clicks instead of mandrillapp.com
- , _mmsg_signing_domain :: Maybe Bool
+ , _mmsg_signing_domain            :: Maybe Bool
    -- ^ a custom domain to use for SPF/DKIM signing instead of mandrill
    -- (for "via" or "on behalf of" in email clients)
- , _mmsg_return_path_domain :: Maybe Bool
+ , _mmsg_return_path_domain        :: Maybe Bool
    -- ^ a custom domain to use for the messages's return-path
- , _mmsg_merge :: Maybe Bool
+ , _mmsg_merge                     :: Maybe Bool
    -- ^ whether to evaluate merge tags in the message.
    -- Will automatically be set to true if either merge_vars
    -- or global_merge_vars are provided.
- , _mmsg_global_merge_vars :: [MergeVar]
+ , _mmsg_global_merge_vars         :: [MergeVar]
    -- ^ global merge variables to use for all recipients. You can override these per recipient.
- , _mmsg_merge_vars :: [MandrillMergeVars]
+ , _mmsg_merge_vars                :: [MandrillMergeVars]
    -- ^ per-recipient merge variables, which override global merge variables with the same name.
- , _mmsg_tags :: [MandrillTags]
+ , _mmsg_tags                      :: [MandrillTags]
    -- ^ an array of string to tag the message with. Stats are accumulated using tags,
    -- though we only store the first 100 we see, so this should not be unique
    -- or change frequently. Tags should be 50 characters or less.
    -- Any tags starting with an underscore are reserved for internal use
    -- and will cause errors.
- , _mmsg_subaccount :: Maybe T.Text
+ , _mmsg_subaccount                :: Maybe T.Text
    -- ^ the unique id of a subaccount for this message
    -- - must already exist or will fail with an error
- , _mmsg_google_analytics_domains :: [T.Text]
+ , _mmsg_google_analytics_domains  :: [T.Text]
    -- ^ an array of strings indicating for which any matching URLs
    -- will automatically have Google Analytics parameters appended
    -- to their query string automatically.
@@ -303,17 +303,17 @@ data MandrillMessage = MandrillMessage {
    -- ^ optional string indicating the value to set for the utm_campaign
    -- tracking parameter. If this isn't provided the email's from address
    -- will be used instead.
- , _mmsg_metadata :: Object
+ , _mmsg_metadata                  :: Object
    -- ^ metadata an associative array of user metadata. Mandrill will store
    -- this metadata and make it available for retrieval.
    -- In addition, you can select up to 10 metadata fields to index
    -- and make searchable using the Mandrill search api.
- , _mmsg_recipient_metadata :: [MandrillMetadata]
+ , _mmsg_recipient_metadata        :: [MandrillMetadata]
    -- ^ Per-recipient metadata that will override the global values
    -- specified in the metadata parameter.
- , _mmsg_attachments :: [MandrillWebContent]
+ , _mmsg_attachments               :: [MandrillWebContent]
    -- ^ an array of supported attachments to add to the message
- , _mmsg_images :: [MandrillWebContent]
+ , _mmsg_images                    :: [MandrillWebContent]
    -- ^ an array of embedded images to add to the message
  } deriving Show
 

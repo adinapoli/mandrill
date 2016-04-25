@@ -4,9 +4,10 @@ module Tests where
 import           Data.Aeson
 import qualified Data.ByteString.Char8               as C8
 import           Data.Either
+import           Network.API.Mandrill.Inbound
 import           Network.API.Mandrill.Messages.Types
-import           Network.API.Mandrill.Users.Types
 import           Network.API.Mandrill.Types
+import           Network.API.Mandrill.Users.Types
 import           RawData
 import           Test.Tasty.HUnit
 
@@ -17,7 +18,7 @@ isRight _ = True
 #endif
 
 testMessagesSend :: Assertion
-testMessagesSend = 
+testMessagesSend =
   assertBool ("send.json: Parsing failed! " ++ show parsePayload)
              (isRight parsePayload)
   where
@@ -49,3 +50,20 @@ testMessagesResponseRejected = do
   where
     parsePayload :: Either String (MandrillResponse [MessagesResponse])
     parsePayload = eitherDecodeStrict . C8.pack $ messagesResponseRejected
+
+testDomainAdd :: Assertion
+testDomainAdd =
+  assertBool ("inbound/add-domain.json (response): parsing failed" ++ show parsePayload)
+             (isRight parsePayload)
+  where
+    parsePayload :: Either String DomainAddResponse
+    parsePayload = eitherDecodeStrict . C8.pack $ domainAdd
+
+
+testRouteAdd :: Assertion
+testRouteAdd =
+  assertBool ("inbound/add-route.json (response): parsing failed" ++ show parsePayload)
+             (isRight parsePayload)
+  where
+    parsePayload :: Either String RouteAddResponse
+    parsePayload = eitherDecodeStrict . C8.pack $ routeAdd
