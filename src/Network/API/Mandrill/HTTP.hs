@@ -1,15 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Network.API.Mandrill.HTTP where
 
-import Network.API.Mandrill.Settings
-import Network.API.Mandrill.Types
-import qualified Data.Text as T
-import Data.Monoid
-import Data.Aeson
-import Control.Applicative
-import Network.HTTP.Types
-import Network.HTTP.Client
-import Network.HTTP.Client.TLS
+import           Control.Applicative
+import           Data.Aeson
+import           Data.Monoid
+import qualified Data.Text                     as T
+import           Network.API.Mandrill.Settings
+import           Network.API.Mandrill.Types
+import           Network.HTTP.Client
+import           Network.HTTP.Client.TLS
+import           Network.HTTP.Types
 
 toMandrillResponse :: (MandrillEndpoint ep, FromJSON a, ToJSON rq)
                    => ep

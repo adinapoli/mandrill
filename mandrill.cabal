@@ -25,6 +25,7 @@ library
     Network.API.Mandrill.Users.Types
     Network.API.Mandrill.Messages
     Network.API.Mandrill.Messages.Types
+    Network.API.Mandrill.Inbound
   other-modules:
     Network.API.Mandrill.Utils
     Network.API.Mandrill.HTTP
