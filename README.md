@@ -8,6 +8,10 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.2.0
+
+* Added inbound calls (Courtesy of @mwotton)
+
 ## Version 0.5.1.0
 
 * Relaxed the constraint on `aeson` to allow `0.11.0.0`.
