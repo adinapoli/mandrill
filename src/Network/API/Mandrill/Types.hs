@@ -1,4 +1,7 @@
 {-# LANGUAGE CPP                 #-}
+{-# LANGUAGE DeriveFunctor       #-}
+{-# LANGUAGE DeriveFoldable      #-}
+{-# LANGUAGE DeriveTraversable   #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -45,7 +48,7 @@ data MandrillError = MandrillError {
   , _merr_code    :: !Int
   , _merr_name    :: !T.Text
   , _merr_message :: !T.Text
-  } deriving Show
+  } deriving (Show, Eq)
 
 makeLenses ''MandrillError
 deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillError
@@ -83,7 +86,7 @@ deriveJSON defaultOptions {
 -- which can be either a success or a failure.
 data MandrillResponse k =
     MandrillSuccess k
-  | MandrillFailure MandrillError deriving Show
+  | MandrillFailure MandrillError deriving (Show, Eq, Functor, Foldable, Traversable)
 
 instance FromJSON k => FromJSON (MandrillResponse k) where
   parseJSON v = case (parseMaybe parseJSON v) :: Maybe k of
