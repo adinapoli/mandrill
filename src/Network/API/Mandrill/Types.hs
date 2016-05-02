@@ -26,6 +26,10 @@ import           Data.Aeson.TH
 import           Data.Aeson.Types
 import qualified Data.ByteString               as B
 import qualified Data.ByteString.Base64        as Base64
+#if !MIN_VERSION_base(4,8,0)
+import           Data.Foldable
+import           Data.Traversable
+#endif
 import qualified Data.HashMap.Strict           as H
 import           Data.Monoid
 import qualified Data.Text                     as T
