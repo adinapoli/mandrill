@@ -8,6 +8,10 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.2.1
+
+* Added `Functor`, `Foldable` and `Traversable` instances to `MandrillResponse` (Courtesy of @dredozubov)
+
 ## Version 0.5.2.0
 
 * Added inbound calls (Courtesy of @mwotton)
