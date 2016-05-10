@@ -44,5 +44,6 @@ main = do
          , testCase "messages/send.json API response parsing" testMessagesResponseRejected
          , testCase "inbound/add-route.json API response parsing" testRouteAdd
          , testCase "inbound/add-domain.json API response parsing" testDomainAdd
+         , testCase "senders/verify-domain.json API response parsing" testVerifyDomain
          ]
      ]

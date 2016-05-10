@@ -228,3 +228,11 @@ routeAdd= [r|
     "url": "http://example.com/webhook-url"
 }
 |]
+
+domainVerify = [r|
+{
+    "status": "example status",
+    "domain": "example domain",
+    "email": "email@domain.com"
+}
+|]
