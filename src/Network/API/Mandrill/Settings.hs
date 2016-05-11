@@ -19,6 +19,8 @@ data MandrillCalls =
   -- Inbound API
   | RoutesAdd
   | DomainsAdd
+  -- Senders API
+  | VerifyDomain
 
   deriving Show
 
@@ -35,3 +37,4 @@ instance MandrillEndpoint MandrillCalls where
   toUrl MessagesSearch       = "messages/search.json"
   toUrl DomainsAdd           = "inbound/add-domain.json"
   toUrl RoutesAdd            = "inbound/add-route.json"
+  toUrl VerifyDomain         = "senders/verify-domain.json"

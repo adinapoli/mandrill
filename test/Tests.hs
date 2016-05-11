@@ -6,6 +6,7 @@ import qualified Data.ByteString.Char8               as C8
 import           Data.Either
 import           Network.API.Mandrill.Inbound
 import           Network.API.Mandrill.Messages.Types
+import           Network.API.Mandrill.Senders
 import           Network.API.Mandrill.Types
 import           Network.API.Mandrill.Users.Types
 import           RawData
@@ -67,3 +68,11 @@ testRouteAdd =
   where
     parsePayload :: Either String RouteAddResponse
     parsePayload = eitherDecodeStrict . C8.pack $ routeAdd
+
+testVerifyDomain :: Assertion
+testVerifyDomain =
+  assertBool ("senders/verify-domain.json" ++ show parsePayload)
+             (isRight parsePayload)
+  where
+    parsePayload ::  Either String VerifyDomainResponse
+    parsePayload = eitherDecodeStrict . C8.pack $ domainVerify

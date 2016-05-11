@@ -1,6 +1,6 @@
 {-# LANGUAGE CPP                 #-}
-{-# LANGUAGE DeriveFunctor       #-}
 {-# LANGUAGE DeriveFoldable      #-}
+{-# LANGUAGE DeriveFunctor       #-}
 {-# LANGUAGE DeriveTraversable   #-}
 {-# LANGUAGE OverloadedStrings   #-}
 {-# LANGUAGE RankNTypes          #-}
@@ -9,6 +9,7 @@
 module Network.API.Mandrill.Types where
 
 import           Control.Applicative
+import           Control.Monad                 (mzero)
 import           Data.Char
 import           Data.Maybe
 import           Data.Time
@@ -37,7 +38,7 @@ import qualified Data.Text.Encoding            as TL
 import qualified Data.Text.Lazy                as TL
 import qualified Text.Blaze.Html               as Blaze
 import qualified Text.Blaze.Html.Renderer.Text as Blaze
-
+import qualified Text.Email.Validate           as TEV
 
 timeParse :: ParseTime t => TimeLocale -> String -> String -> Maybe t
 #if MIN_VERSION_time(1,5,0)
@@ -386,3 +387,13 @@ instance FromJSON MandrillDate where
       case timeParse defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
         Just d -> pure $ MandrillDate d
         _      -> fail "could not parse Mandrill date"
+
+
+instance ToJSON TEV.EmailAddress where
+  toJSON = String . TL.decodeUtf8 . TEV.toByteString
+
+instance FromJSON TEV.EmailAddress where
+  parseJSON (String s) = case TEV.emailAddress (TL.encodeUtf8 s) of
+    Nothing -> mzero
+    Just x -> return x
+  parseJSON _ = mzero
