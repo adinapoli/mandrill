@@ -43,20 +43,3 @@ verifyDomain :: MandrillKey
 verifyDomain k email =
   toMandrillResponse VerifyDomain
   (VerifyDomainRq k (decodeUtf8 $ TEV.domainPart email) (decodeUtf8 $ TEV.localPart email))
--- addDomain :: MandrillKey
-
--- addDomain k dom = toMandrillResponse DomainsAdd (DomainAddRq k dom)
-
-
-
--- addRoute :: MandrillKey
---      -- ^ The API key
---      -> Text
---      -- ^ The domain to add
---      -> Text
---      -- ^ the pattern including wildcards
---      -> Text
---      -- ^ URL to forward to
---      -> Maybe Manager
---      -> IO (MandrillResponse RouteAddResponse)
--- addRoute k dom pattern forward = toMandrillResponse RoutesAdd (RouteAddRq k dom pattern forward)

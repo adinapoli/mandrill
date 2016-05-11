@@ -77,8 +77,16 @@ main = do
     + ~~ping.json~~ (as **doesn't return valid json!**)
     + ping2.json
     + senders.json
+
   - [Messages call](https://mandrillapp.com/api/docs/messages.JSON.html)
     + send.json
+
+  - [Senders call](https://mandrillapp.com/api/docs/senders.JSON.html)
+    + verify-domain.json
+
+  - [Inbound call](https://mandrillapp.com/api/docs/inbound.JSON.html)
+    + add-route.json
+    + add-domain.json
 
 # Testing online API
 
