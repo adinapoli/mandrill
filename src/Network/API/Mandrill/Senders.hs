@@ -27,7 +27,7 @@ data VerifyDomainResponse =
   VerifyDomainResponse
   { _vdres_status :: Text
   , _vdres_domain :: Text
-  , _vdres_email  :: TEV.EmailAddress
+  , _vdres_email  :: MandrillEmail
   } deriving Show
 
 makeLenses ''VerifyDomainResponse
@@ -42,4 +42,4 @@ verifyDomain :: MandrillKey
                 -> IO (MandrillResponse VerifyDomainResponse)
 verifyDomain k email =
   toMandrillResponse VerifyDomain
-  (VerifyDomainRq k (decodeUtf8 $ TEV.domainPart email) (decodeUtf8 $ TEV.localPart email))
+  (VerifyDomainRq k  (decodeUtf8 $ TEV.domainPart email) (decodeUtf8 $ TEV.localPart email))
