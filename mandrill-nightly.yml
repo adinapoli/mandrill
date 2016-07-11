@@ -2,9 +2,8 @@ flags: {}
 packages:
 - '.'
 - location:
-    git: git@github.com:bos/aeson.git
-    commit: 674eee5972864f9a32e27e9a827693edef0ad737
+    git: git@github.com:nick8325/quickcheck
+    commit: 58fc2873dcfe8d0b826ece9e75f0c232d943fb61
 extra-deps:
-  - aeson-0.11.0.0
-  - fail-4.9.0.0
-resolver: lts-5.2
+  - QuickCheck-4.9
+resolver: lts-6.7
