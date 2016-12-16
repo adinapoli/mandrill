@@ -26,6 +26,7 @@ library
     Network.API.Mandrill.Messages
     Network.API.Mandrill.Messages.Types
     Network.API.Mandrill.Inbound
+    Network.API.Mandrill.Webhooks
     Network.API.Mandrill.Senders
   other-modules:
     Network.API.Mandrill.Utils
