@@ -62,7 +62,7 @@ data WebhookAddRq =
   { _warq_key         :: MandrillKey
   , _warq_url         :: Text
   , _warq_description :: Text
-  , _warq_events      :: [EventHook]
+  , _warq_events      :: Set EventHook
   } deriving Show
 
 makeLenses ''WebhookAddRq
