@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell   #-}
 module Network.API.Mandrill.Webhooks where
+import           Control.Applicative           (pure)
 import           Control.Lens
 import           Control.Monad                 (mzero)
 import           Data.Aeson                    (FromJSON, ToJSON, parseJSON,
