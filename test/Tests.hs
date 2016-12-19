@@ -9,6 +9,7 @@ import           Network.API.Mandrill.Messages.Types
 import           Network.API.Mandrill.Senders
 import           Network.API.Mandrill.Types
 import           Network.API.Mandrill.Users.Types
+import           Network.API.Mandrill.Webhooks
 import           RawData
 import           Test.Tasty.HUnit
 
@@ -76,3 +77,12 @@ testVerifyDomain =
   where
     parsePayload ::  Either String VerifyDomainResponse
     parsePayload = eitherDecodeStrict . C8.pack $ domainVerify
+
+
+testWebhookAdd :: Assertion
+testWebhookAdd =
+  assertBool ("webhooks/add.json (request): parsing failed" ++ show parsePayload)
+             (isRight parsePayload)
+  where
+    parsePayload :: Either String WebhookAddRq
+    parsePayload = eitherDecodeStrict . C8.pack $ webhookAdd

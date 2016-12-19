@@ -236,3 +236,22 @@ domainVerify = [r|
     "email": "email@domain.com"
 }
 |]
+
+webhookAdd = [r|
+{
+    "key": "example key",
+    "url": "http://example/webhook-url",
+    "description": "My Example Webhook",
+    "events": [
+         "send",
+         "deferral",
+         "hard_bounce",
+         "soft_bounce",
+         "open",
+         "click",
+         "spam",
+         "unsub",
+         "reject"
+    ]
+}
+|]
