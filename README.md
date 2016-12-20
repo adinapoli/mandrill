@@ -8,6 +8,10 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.3.0
+
+* Added support for webhooks (thanks to @mwotton).
+
 ## Version 0.5.2.3
 
 * Added support for aeson-1.0.0.0 by relaxing its upper bound.
