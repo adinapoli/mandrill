@@ -8,6 +8,10 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.3.1
+
+* Relaxed upper bound on Aeson (see: fpco/stackage/issues/2177 )
+
 ## Version 0.5.3.0
 
 * Added support for webhooks (thanks to @mwotton).
