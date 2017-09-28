@@ -286,10 +286,10 @@ data MandrillMessage = MandrillMessage {
    -- ^ an optional address to receive an exact copy of each recipient's email
  , _mmsg_tracking_domain           :: Maybe T.Text
    -- ^ a custom domain to use for tracking opens and clicks instead of mandrillapp.com
- , _mmsg_signing_domain            :: Maybe Bool
+ , _mmsg_signing_domain            :: Maybe T.Text
    -- ^ a custom domain to use for SPF/DKIM signing instead of mandrill
    -- (for "via" or "on behalf of" in email clients)
- , _mmsg_return_path_domain        :: Maybe Bool
+ , _mmsg_return_path_domain        :: Maybe T.Text
    -- ^ a custom domain to use for the messages's return-path
  , _mmsg_merge                     :: Maybe Bool
    -- ^ whether to evaluate merge tags in the message.
