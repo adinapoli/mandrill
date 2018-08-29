@@ -1,11 +1,11 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Network.API.Mandrill.Inbound where
-import           Control.Lens
 import           Data.Aeson                    (FromJSON, ToJSON, parseJSON,
                                                 toJSON)
 import           Data.Aeson.TH                 (defaultOptions, deriveJSON)
 import           Data.Aeson.Types              (fieldLabelModifier)
 import           Data.Text                     (Text)
+import           Lens.Micro.TH                 (makeLenses)
 import           Network.API.Mandrill.HTTP     (toMandrillResponse)
 import           Network.API.Mandrill.Settings
 import           Network.API.Mandrill.Types

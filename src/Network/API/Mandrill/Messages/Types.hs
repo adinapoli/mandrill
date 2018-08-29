@@ -5,12 +5,12 @@ module Network.API.Mandrill.Messages.Types where
 import           Data.Char
 import           Data.Time
 import qualified Data.Text as T
-import           Control.Lens
 import           Control.Monad
 import           Data.Monoid
 import           Data.Aeson
 import           Data.Aeson.Types
 import           Data.Aeson.TH
+import           Lens.Micro.TH (makeLenses)
 
 import           Network.API.Mandrill.Types
 
