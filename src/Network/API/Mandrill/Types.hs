@@ -13,6 +13,7 @@ import           Control.Monad                 (mzero)
 import           Data.Char
 import           Data.Maybe
 import           Data.Time
+import           Lens.Micro.TH (makeLenses)
 import           Network.API.Mandrill.Utils
 import           Test.QuickCheck
 import           Text.Email.Validate
@@ -21,7 +22,6 @@ import           Data.Time.Format              (TimeLocale, defaultTimeLocale)
 #else
 import           System.Locale                 (TimeLocale, defaultTimeLocale)
 #endif
-import           Control.Lens
 import           Data.Aeson
 import           Data.Aeson.TH
 import           Data.Aeson.Types

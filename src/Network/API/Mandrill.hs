@@ -20,13 +20,13 @@ module Network.API.Mandrill (
   -- $exampleusage
   ) where
 
-import           Control.Lens
 import           Control.Monad.Reader
 import qualified Data.Aeson                          as JSON
 import qualified Data.HashMap.Strict                 as H
 import           Data.Monoid
 import qualified Data.Text                           as T
 import           Data.Time
+import           Lens.Micro
 import           Network.API.Mandrill.Messages       as M
 import           Network.API.Mandrill.Messages.Types as M
 import           Network.API.Mandrill.Trans          as M
