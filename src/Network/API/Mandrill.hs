@@ -26,7 +26,6 @@ import qualified Data.HashMap.Strict                 as H
 import           Data.Monoid
 import qualified Data.Text                           as T
 import           Data.Time
-import           Lens.Micro
 import           Network.API.Mandrill.Messages       as M
 import           Network.API.Mandrill.Messages.Types as M
 import           Network.API.Mandrill.Trans          as M
@@ -107,7 +106,7 @@ newHtmlMessage :: EmailAddress
                -- ^ The HTML body
                -> MandrillMessage
 newHtmlMessage f t subj html = let body = mkMandrillHtml html in
-  ((mmsg_html .~ body) . (mmsg_subject .~ subj)) $ (emptyMessage f t)
+  (emptyMessage f t) { _mmsg_html = body, _mmsg_subject = subj }
 
 --------------------------------------------------------------------------------
 -- | Create a new template message (no HTML).
@@ -118,7 +117,7 @@ newTemplateMessage :: EmailAddress
                    -> T.Text
                    -- ^ Subject
                    -> MandrillMessage
-newTemplateMessage f t subj = (mmsg_subject .~ subj) $ (emptyMessage f t)
+newTemplateMessage f t subj = (emptyMessage f t) { _mmsg_subject = subj }
 
 --------------------------------------------------------------------------------
 -- | Create a new textual message. By default Mandrill doesn't require you
@@ -134,9 +133,11 @@ newTextMessage :: EmailAddress
                -- ^ The body, as normal text.
                -> MandrillMessage
 newTextMessage f t subj txt = let body = unsafeMkMandrillHtml txt in
-  ((mmsg_html .~ body) .
-   (mmsg_text .~ Just txt) .
-   (mmsg_subject .~ subj)) (emptyMessage f t)
+  (emptyMessage f t) {
+       _mmsg_html = body
+     , _mmsg_text = Just txt
+     , _mmsg_subject = subj
+     }
 
 
 --------------------------------------------------------------------------------
