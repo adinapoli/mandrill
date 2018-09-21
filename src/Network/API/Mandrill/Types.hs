@@ -158,6 +158,11 @@ unsafeMkMandrillHtml = MandrillHtml . Blaze.preEscapedToHtml
 mkMandrillHtml :: Blaze.Html -> MandrillHtml
 mkMandrillHtml = MandrillHtml
 
+#if MIN_VERSION_base(4,11,0)
+instance Semigroup MandrillHtml where
+  MandrillHtml m1 <> MandrillHtml m2 = MandrillHtml (m1 <> m2)
+#endif
+
 instance Monoid MandrillHtml where
   mempty = MandrillHtml mempty
   mappend (MandrillHtml m1) (MandrillHtml m2) = MandrillHtml (m1 <> m2)
