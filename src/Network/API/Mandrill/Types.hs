@@ -252,9 +252,9 @@ data MandrillMessage = MandrillMessage {
    -- ^ The full HTML content to be sent
  , _mmsg_text                      :: Maybe T.Text
    -- ^ Optional full text content to be sent
- , _mmsg_subject                   :: !T.Text
+ , _mmsg_subject                   :: !(Maybe T.Text)
    -- ^ The message subject
- , _mmsg_from_email                :: MandrillEmail
+ , _mmsg_from_email                :: Maybe MandrillEmail
    -- ^ The sender email address
  , _mmsg_from_name                 :: Maybe T.Text
    -- ^ Optional from name to be used
@@ -336,8 +336,8 @@ deriveJSON defaultOptions { fieldLabelModifier = drop 6 } ''MandrillMessage
 instance Arbitrary MandrillMessage where
   arbitrary = MandrillMessage <$> arbitrary
                               <*> pure Nothing
-                              <*> pure "Test Subject"
-                              <*> pure (MandrillEmail . fromJust $ emailAddress "sender@example.com")
+                              <*> pure (Just "Test Subject")
+                              <*> pure (MandrillEmail <$> emailAddress "sender@example.com")
                               <*> pure Nothing
                               <*> resize 2 arbitrary
                               <*> pure H.empty

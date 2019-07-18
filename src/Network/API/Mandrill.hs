@@ -14,6 +14,7 @@ module Network.API.Mandrill (
   , newTextMessage
   , newHtmlMessage
   , newTemplateMessage
+  , newTemplateMessage'
   , liftIO
 
   -- * Appendix: Example Usage
@@ -58,12 +59,12 @@ The API was designed to allow to get you started as quickly as possible:
 -- | Builds an empty message, given only the email of the sender and
 -- the emails of the receiver. Please note that the "Subject" will be empty,
 -- so you need to use either @newTextMessage@ or @newHtmlMessage@ to populate it.
-emptyMessage :: EmailAddress -> [EmailAddress] -> MandrillMessage
+emptyMessage :: Maybe EmailAddress -> [EmailAddress] -> MandrillMessage
 emptyMessage f t = MandrillMessage {
    _mmsg_html = mempty
  , _mmsg_text = Nothing
- , _mmsg_subject = T.empty
- , _mmsg_from_email = (MandrillEmail f)
+ , _mmsg_subject = Nothing
+ , _mmsg_from_email = MandrillEmail <$> f
  , _mmsg_from_name = Nothing
  , _mmsg_to = map newRecipient t
  , _mmsg_headers = H.empty
@@ -106,7 +107,7 @@ newHtmlMessage :: EmailAddress
                -- ^ The HTML body
                -> MandrillMessage
 newHtmlMessage f t subj html = let body = mkMandrillHtml html in
-  (emptyMessage f t) { _mmsg_html = body, _mmsg_subject = subj }
+  (emptyMessage (Just f) t) { _mmsg_html = body, _mmsg_subject = Just subj }
 
 --------------------------------------------------------------------------------
 -- | Create a new template message (no HTML).
@@ -117,7 +118,16 @@ newTemplateMessage :: EmailAddress
                    -> T.Text
                    -- ^ Subject
                    -> MandrillMessage
-newTemplateMessage f t subj = (emptyMessage f t) { _mmsg_subject = subj }
+newTemplateMessage f t subj = (emptyMessage (Just f) t) { _mmsg_subject = Just subj }
+
+--------------------------------------------------------------------------------
+-- | Create a new template message (no HTML) with recipient addresses only.
+-- This function is preferred when the template being used has the sender 
+-- address and subject already configured in the Mandrill server.
+newTemplateMessage' :: [EmailAddress]
+                    -- ^ Sender email
+                    -> MandrillMessage
+newTemplateMessage' = emptyMessage Nothing
 
 --------------------------------------------------------------------------------
 -- | Create a new textual message. By default Mandrill doesn't require you
@@ -133,10 +143,10 @@ newTextMessage :: EmailAddress
                -- ^ The body, as normal text.
                -> MandrillMessage
 newTextMessage f t subj txt = let body = unsafeMkMandrillHtml txt in
-  (emptyMessage f t) {
+  (emptyMessage (Just f) t) {
        _mmsg_html = body
      , _mmsg_text = Just txt
-     , _mmsg_subject = subj
+     , _mmsg_subject = Just subj
      }
 
 
