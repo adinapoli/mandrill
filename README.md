@@ -8,6 +8,11 @@ the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
 
+## Version 0.5.3.6
+
+* Allow the package to work with base >= 4.11 (Courtesy of @basvandijk)
+* Support building with LTS 13.29
+
 ## Version 0.5.3.5
 
 * Replaced dependency on lens with microlens (Courtesy of @tom-bop)
