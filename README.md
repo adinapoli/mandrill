@@ -7,7 +7,7 @@ This module implement a low-level, 1:1 mapping API to
 the [Mandrill](http://mandrillapp.com) transactional email service.
 
 # Changelog
-## Version 0.5.3.6
+## Version 0.5.4.0
 
 * Add `newTemplateMessage'` for sending message that uses a template whose sender address and subject are already configured in the Mandrill server.
 * Set `mmsg_subject` and `mmsg_from_email` optional.
