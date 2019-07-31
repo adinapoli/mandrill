@@ -125,7 +125,7 @@ newTemplateMessage f t subj = (emptyMessage (Just f) t) { _mmsg_subject = Just s
 -- This function is preferred when the template being used has the sender 
 -- address and subject already configured in the Mandrill server.
 newTemplateMessage' :: [EmailAddress]
-                    -- ^ Sender email
+                    -- ^ Receivers email
                     -> MandrillMessage
 newTemplateMessage' = emptyMessage Nothing
 
