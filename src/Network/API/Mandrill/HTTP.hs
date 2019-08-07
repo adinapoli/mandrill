@@ -18,7 +18,7 @@ toMandrillResponse :: (MandrillEndpoint ep, FromJSON a, ToJSON rq)
                    -> IO (MandrillResponse a)
 toMandrillResponse ep rq mbMgr = do
   let fullUrl = mandrillUrl <> toUrl ep
-  rq' <- parseUrl (T.unpack fullUrl)
+  rq' <- parseRequest (T.unpack fullUrl)
   let headers = [(hContentType, "application/json")]
   let jsonBody = encode rq
   let req = rq' {
