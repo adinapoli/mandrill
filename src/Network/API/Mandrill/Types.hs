@@ -389,6 +389,6 @@ instance ToJSON MandrillDate where
 
 instance FromJSON MandrillDate where
   parseJSON = withText "MandrillDate" $ \t ->
-      case timeParse defaultTimeLocale "%Y-%m-%d %I:%M:%S%Q" (T.unpack t) of
+      case timeParse defaultTimeLocale "%Y-%m-%d %H:%M:%S%Q" (T.unpack t) of
         Just d -> pure $ MandrillDate d
         _      -> fail "could not parse Mandrill date"
