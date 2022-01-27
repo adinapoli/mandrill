@@ -340,7 +340,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure (MandrillEmail <$> emailAddress "sender@example.com")
                               <*> pure Nothing
                               <*> resize 2 arbitrary
-                              <*> pure H.empty
+                              <*> pure mempty
                               <*> pure Nothing
                               <*> pure Nothing
                               <*> pure Nothing
@@ -361,7 +361,7 @@ instance Arbitrary MandrillMessage where
                               <*> pure Nothing
                               <*> pure []
                               <*> pure Nothing
-                              <*> pure H.empty
+                              <*> pure mempty
                               <*> pure []
                               <*> pure []
                               <*> pure []
